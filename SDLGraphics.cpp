@@ -50,11 +50,11 @@ SDLGraphics::SDLGraphics()
 
 SDLGraphics::~SDLGraphics() {
 
-   std::list<SDL_Texture*>::iterator it;
+    std::list<SDL_Texture*>::iterator it;
 
-   for (it = textures.begin(); it != textures.end() ; it++) {
-    SDL_DestroyTexture(*it);
-   }
+    for (it = textures.begin(); it != textures.end() ; it++) {
+        SDL_DestroyTexture(*it);
+    }
 
     SDL_DestroyRenderer(mpRenderer);
     SDL_DestroyWindow(mpWindow);
@@ -66,7 +66,7 @@ SDL_Renderer* SDLGraphics::getRenderer() {
     if (mpRenderer != 0){
         return mpRenderer;
     }
-    
+
     mpRenderer= SDL_CreateRenderer(mpWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (mpRenderer == 0){
         std::cout << SDL_GetError() << std::endl;
@@ -84,4 +84,3 @@ SDL_Texture* SDLGraphics::loadTexture(const std::string& arFileName) {
     textures.push_back(texture);
     return texture;
 }
-
