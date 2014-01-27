@@ -1,3 +1,5 @@
+#ifndef BOARD_H
+#define BOARD_H
 #include <vector>
 enum Peice {
    RED,
@@ -41,3 +43,5 @@ class Board {
       
           Peice getPositionStatus(enum ColumnName column, int level);
 };
+
+#endif  // BOARD_H

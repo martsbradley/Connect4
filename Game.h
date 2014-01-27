@@ -4,6 +4,7 @@
 #include "SDL2/SDL_image.h"
 
 class SDLGraphics;
+class Connect4Grid;
 
 //  below includes will be removed to subclass
 struct SDL_Texture;
@@ -13,6 +14,7 @@ struct SDL_Texture;
 class Game {
 public:
     Game(SDLGraphics& arGraphics);
+    ~Game();
     void play();
     bool handleEvents();
     void renderScene();
@@ -20,13 +22,6 @@ private:
     SDLGraphics& mrGraphics;
     SDL_Renderer *mpRenderer;
 
-
-//  below members will be removed to subclass
-    void renderBoard();
-    void renderColumn(enum ColumnName column);
-
-    Board mBoard;
-    SDL_Texture* image;
-    SDL_Texture* button;
+    Connect4Grid* mpGrid;
 };
 #endif  // GAME_H
