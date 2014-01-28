@@ -13,6 +13,8 @@ public:
 
     SDL_Texture* loadTexture(const std::string& arName);
 
+    SDL_Texture* loadFromFile(const std::string& arFileName);
+
 
 private:
     std::list<SDL_Texture*> textures;

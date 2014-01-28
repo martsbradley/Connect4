@@ -18,15 +18,18 @@ public:
     void handleEvent(SDL_Event& arEvent);
 private:
     void renderColumn(enum ColumnName column);
+    void renderBoardOutline();
 
     Board mBoard;
 
     //SDL_Texture* image;
     SDL_Texture* mpRedButton;
     SDL_Texture* mpYellowButton;
+    SDL_Texture* mpBoardTexture;
     SDLGraphics& mrGraphics;
 
     SDL_Renderer *mpRenderer;
     Peice nextPeice;
+
 };
 #endif // CONNECT4GRID_H
