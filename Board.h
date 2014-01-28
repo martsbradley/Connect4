@@ -21,14 +21,17 @@ class Column {
     private:
        std::vector<Peice> colData;
        int columnId;
+       
       
     public:
+   
        Column(int id);
        int getId();
        const static int MaxHeight = 6;
        Peice getPositionStatus(int level);
        void addPeice(Peice position);
        const bool isFull();
+       void reset();
 };
 
 class Board {
@@ -37,7 +40,7 @@ class Board {
           std::vector<Column> mColumns;
    public: 
           Board();
-          void init();
+          void reset();
 
           void addPeice(Peice peice, enum ColumnName column);
       

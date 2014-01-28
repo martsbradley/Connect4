@@ -101,6 +101,9 @@ void Connect4Grid::handleEvent(SDL_Event& arEvent)
     unsigned int col = 10;
     if (arEvent.type == SDL_KEYDOWN) {
         switch(arEvent.key.keysym.sym) {
+            case SDLK_ESCAPE:
+                mBoard.reset();
+                break;
             case SDLK_1:
                 col = COLUMN0;
                 break;

@@ -34,6 +34,9 @@ Column::Column(int aId)
 int Column::getId() {
   return columnId;
 }
+void Column::reset() {
+  return colData.clear();
+}
 
 
 //  Checks that the level is in bounds.
@@ -65,7 +68,12 @@ Board::Board() {
     mColumns.push_back(Column(6));
 }
 
-void Board::init() {
+void Board::reset()
+{
+    std::vector<Column>::iterator it;
+    for (it = mColumns.begin(); it != mColumns.end(); it++) {
+        it->reset();
+    }
 }
 
 // helper method avoids polluting the interface of the class.
