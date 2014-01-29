@@ -1,15 +1,8 @@
 #include "Board.h"
 #include <exception>
 #include <stdexcept>
-
 #include <string>
-
-
 #include <sstream>
-
-
-
-
 
 void Column::addPeice(Peice status) {
     if (isFull()) {
@@ -38,7 +31,6 @@ void Column::reset() {
   return colData.clear();
 }
 
-
 //  Checks that the level is in bounds.
 static void checkLevel(int level) {
     if (level < 0 || level > Column::MaxHeight) {
@@ -55,6 +47,11 @@ Peice Column::getPositionStatus(int level) {
     else {
        return EMPTY;
     }
+}
+
+int Column::getCount() 
+{
+    return colData.size();
 }
 
 
@@ -95,3 +92,8 @@ Peice Board::getPositionStatus(enum ColumnName column, int level) {
    checkColumn(column, mColumns);
    return mColumns[column].getPositionStatus(level);   
 }
+
+int Board::howManyPeicesInColumn(enum ColumnName column){
+   return mColumns[column].getCount();
+}
+

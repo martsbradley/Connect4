@@ -8,6 +8,24 @@ class SDL_Renderer;
 class PeiceAnimation;
 union SDL_Event;
 
+struct NextPeice {
+
+   NextPeice() :
+      next(RED),
+      pButton(0)
+   {
+   }
+
+   NextPeice(Peice p, SDL_Texture*t) :
+      next(p),
+      pButton(t)
+   {
+   }
+
+   Peice next;
+   SDL_Texture* pButton;
+};
+
 class Connect4Grid {
 
 public:
@@ -21,8 +39,7 @@ private:
     void renderColumn(enum ColumnName column);
     void renderBoardOutline();
 
-    void startAnimation(Peice aPeice, int col);
-    bool animationRunning();
+    void startAnimation(int col);
 
     Board mBoard;
 
@@ -33,7 +50,7 @@ private:
     SDLGraphics& mrGraphics;
 
     SDL_Renderer *mpRenderer;
-    Peice nextPeice;
+    struct NextPeice nextPeice;
 
     PeiceAnimation* mpAnimation;
 };

@@ -143,12 +143,12 @@ bool Timer::is_paused()
 }
 
 
-int frameCounter = 0;
+float frameRate;
     
 //Timer used to calculate the frames per second
-static Timer fps;
-
 //Timer used to update the caption
+static int frameCounter = 0;
+static Timer fps;
 static Timer update;
 
 
@@ -184,7 +184,8 @@ void Game::play()
             std::stringstream caption;
             
             //Calculate the frames per second and create the string
-            std::cout << "Average Frames Per Second: " << frameCounter / ( fps.get_ticks() / 1000.f ) << std::endl;
+            float frameRate = frameCounter / ( fps.get_ticks() / 1000.f );
+            std::cout << "Average Frames Per Second: " <<  frameRate << std::endl;
             
             //Reset the caption
             //SDL_WM_SetCaption( caption.str().c_str(), NULL );

@@ -27,6 +27,7 @@ class Column {
    
        Column(int id);
        int getId();
+       int getCount();
        const static int MaxHeight = 6;
        Peice getPositionStatus(int level);
        void addPeice(Peice position);
@@ -45,6 +46,7 @@ class Board {
           void addPeice(Peice peice, enum ColumnName column);
       
           Peice getPositionStatus(enum ColumnName column, int level);
+          int howManyPeicesInColumn(enum ColumnName column);
 };
 
 #endif  // BOARD_H
