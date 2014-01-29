@@ -5,6 +5,7 @@
 class SDLGraphics;
 class SDL_Texture;
 class SDL_Renderer;
+class PeiceAnimation;
 union SDL_Event;
 
 class Connect4Grid {
@@ -20,6 +21,9 @@ private:
     void renderColumn(enum ColumnName column);
     void renderBoardOutline();
 
+    void startAnimation(Peice aPeice, int col);
+    bool animationRunning();
+
     Board mBoard;
 
     //SDL_Texture* image;
@@ -31,5 +35,6 @@ private:
     SDL_Renderer *mpRenderer;
     Peice nextPeice;
 
+    PeiceAnimation* mpAnimation;
 };
 #endif // CONNECT4GRID_H
