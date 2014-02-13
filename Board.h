@@ -1,7 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 #include <vector>
-enum Peice {
+enum Piece {
    RED,
    YELLOW,
    EMPTY
@@ -17,36 +17,54 @@ enum ColumnName {
 };
 
 
+class BoardListener
+{
+public:
+    virtual void peiceAdded(enum Piece aPiece, enum ColumnName aCol, int level) = 0;
+    virtual void clearBoarded() = 0;
+};
+
+
 class Column {
-    private:
-       std::vector<Peice> colData;
-       int columnId;
+private:
+    std::vector<Piece> colData;
+    int mColumnId;
        
       
-    public:
+public:
    
-       Column(int id);
-       int getId();
-       int getCount();
-       const static int MaxHeight = 6;
-       Peice getPositionStatus(int level);
-       void addPeice(Peice position);
-       const bool isFull();
-       void reset();
+    bool operator==(const Column& arColumn) const;
+    Column(int id);
+    int getId() const;
+    int getCount();
+    const static int MaxHeight = 6;
+    Piece getPositionStatus(int level);
+    void addPiece(Piece position);
+    const bool isFull();
+    void reset();
 };
 
 class Board {
 
-    private:
-          std::vector<Column> mColumns;
-   public: 
-          Board();
-          void reset();
+public: 
+    Board();
+    Board(const Board& arBoard);
+    void reset();
 
-          void addPeice(Peice peice, enum ColumnName column);
-      
-          Peice getPositionStatus(enum ColumnName column, int level);
-          int howManyPeicesInColumn(enum ColumnName column);
+    void addPiece(enum ColumnName column);
+    Piece getNextPiece() const;
+
+    Piece getPositionStatus(enum ColumnName column, int level);
+    int howManyPiecesInColumn(enum ColumnName column);
+
+    void addBoardListener(BoardListener* apBoardListener);
+
+    std::vector<Board> generateNextTurns();
+
+    bool operator==(const Board& arBoard) const;
+private:
+    std::vector<Column> mColumns;
+    std::vector<BoardListener*> mListeners;
+    Piece nextPiece;
 };
-
 #endif  // BOARD_H

@@ -1,13 +1,13 @@
 #include "SDL.h"
 #include "SDL2/SDL_image.h"
-#include "PeiceAnimation.h"
+#include "PieceAnimation.h"
 #include "RenderCode.h"
 #include "SDL.h"
 #include <iostream>
 
 extern float frameRate;
 
-PeiceAnimation::PeiceAnimation(int aEndLevel, int aColumn, SDL_Texture* arButton)
+PieceAnimation::PieceAnimation(int aEndLevel, int aColumn, SDL_Texture* arButton)
   : mColumn(aColumn),
     mpTexture(arButton),
     y(0),
@@ -17,14 +17,14 @@ PeiceAnimation::PeiceAnimation(int aEndLevel, int aColumn, SDL_Texture* arButton
    mEndY = getYCordinateForLevel(aEndLevel);
 }
 
-void PeiceAnimation::start()
+void PieceAnimation::start()
 {
    mStartTime = SDL_GetTicks();
 }
     
 int times = 0;
 
-void PeiceAnimation::render(SDL_Renderer *apRenderer)
+void PieceAnimation::render(SDL_Renderer *apRenderer)
 {
     int currentTick= SDL_GetTicks();
     float secsEachDraw = (currentTick - mStartTime)/ 1000.0;
@@ -44,16 +44,16 @@ void PeiceAnimation::render(SDL_Renderer *apRenderer)
     }
 }
 
-int PeiceAnimation::getColumn() 
+int PieceAnimation::getColumn() 
 {
     return mColumn;
 }
 
-void PeiceAnimation::finished()
+void PieceAnimation::finished()
 {
     mFinished = true;
 }
-bool PeiceAnimation::isFinished()
+bool PieceAnimation::isFinished()
 {
     return mFinished;
 }

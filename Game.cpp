@@ -217,4 +217,3 @@ void Game::renderScene(){
          
         SDL_RenderPresent(mpRenderer);
 }
-

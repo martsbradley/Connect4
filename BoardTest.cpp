@@ -1,6 +1,7 @@
 #include "BoardTest.h"
 #include "Board.h"
 #include <stdexcept>
+#include <iostream>
 #include <cppunit/extensions/HelperMacros.h>
 
 // Registers the fixture into the 'registry'
@@ -19,48 +20,127 @@ void BoardTest::tearDown()
 }
 
 
-void BoardTest::testColumnOneFull()
+void BoardTest::testNextPiece()
 {
-    mpBoard->addPeice(RED, COLUMN0);
-    mpBoard->addPeice(RED, COLUMN0);
-    mpBoard->addPeice(RED, COLUMN0);
-    mpBoard->addPeice(RED, COLUMN0);
-    mpBoard->addPeice(RED, COLUMN0);
-    mpBoard->addPeice(RED, COLUMN0);
-
-    try {
-        mpBoard->addPeice(RED, COLUMN0);
-        CPPUNIT_FAIL( "Should have failed, too many pieces in column" );
-    }
-    catch (std::logic_error e) {
-    }
+    mpBoard->addPiece(COLUMN0);
+    CPPUNIT_ASSERT_EQUAL(YELLOW,    mpBoard->getNextPiece());
+    mpBoard->addPiece(COLUMN0);
+    CPPUNIT_ASSERT_EQUAL(RED,    mpBoard->getNextPiece());
+    mpBoard->addPiece(COLUMN0);
+    CPPUNIT_ASSERT_EQUAL(YELLOW,    mpBoard->getNextPiece());
+    mpBoard->addPiece(COLUMN0);
+    CPPUNIT_ASSERT_EQUAL(RED,    mpBoard->getNextPiece());
+    mpBoard->addPiece(COLUMN0);
+    CPPUNIT_ASSERT_EQUAL(YELLOW,    mpBoard->getNextPiece());
+    mpBoard->addPiece(COLUMN0);
+    CPPUNIT_ASSERT_EQUAL(RED,    mpBoard->getNextPiece());
 }
 
 void BoardTest::testGetPositionStatus() {
-    mpBoard->addPeice(RED, COLUMN0);
-    mpBoard->addPeice(RED, COLUMN1);
-    mpBoard->addPeice(RED, COLUMN2);
-    mpBoard->addPeice(RED, COLUMN3);
-    mpBoard->addPeice(RED, COLUMN4);
+    mpBoard->addPiece(COLUMN0);//RED
+    mpBoard->addPiece(COLUMN1);
+    mpBoard->addPiece(COLUMN2);//RED
+    mpBoard->addPiece(COLUMN3);
+    mpBoard->addPiece(COLUMN4);//RED
 
-    mpBoard->addPeice(YELLOW, COLUMN0);
-    mpBoard->addPeice(YELLOW, COLUMN1);
-    mpBoard->addPeice(YELLOW, COLUMN2);
-    mpBoard->addPeice(YELLOW, COLUMN3);
-    mpBoard->addPeice(YELLOW, COLUMN4);
+    mpBoard->addPiece(COLUMN0);
+    mpBoard->addPiece(COLUMN1);//RED
+    mpBoard->addPiece(COLUMN2);
+    mpBoard->addPiece(COLUMN3);//RED
+    mpBoard->addPiece(COLUMN4);
 
     CPPUNIT_ASSERT_EQUAL(RED,    mpBoard->getPositionStatus(COLUMN0,0));
     CPPUNIT_ASSERT_EQUAL(YELLOW, mpBoard->getPositionStatus(COLUMN0,1));
 
-    CPPUNIT_ASSERT_EQUAL(RED,    mpBoard->getPositionStatus(COLUMN1,0));
-    CPPUNIT_ASSERT_EQUAL(YELLOW, mpBoard->getPositionStatus(COLUMN1,1));
+    CPPUNIT_ASSERT_EQUAL(YELLOW,    mpBoard->getPositionStatus(COLUMN1,0));
+    CPPUNIT_ASSERT_EQUAL(RED, mpBoard->getPositionStatus(COLUMN1,1));
 
     CPPUNIT_ASSERT_EQUAL(RED,    mpBoard->getPositionStatus(COLUMN2,0));
     CPPUNIT_ASSERT_EQUAL(YELLOW, mpBoard->getPositionStatus(COLUMN2,1));
 
-    CPPUNIT_ASSERT_EQUAL(RED,    mpBoard->getPositionStatus(COLUMN3,0));
-    CPPUNIT_ASSERT_EQUAL(YELLOW, mpBoard->getPositionStatus(COLUMN3,1));
+    CPPUNIT_ASSERT_EQUAL(YELLOW,    mpBoard->getPositionStatus(COLUMN3,0));
+    CPPUNIT_ASSERT_EQUAL(RED, mpBoard->getPositionStatus(COLUMN3,1));
 
     CPPUNIT_ASSERT_EQUAL(RED,    mpBoard->getPositionStatus(COLUMN4,0));
     CPPUNIT_ASSERT_EQUAL(YELLOW, mpBoard->getPositionStatus(COLUMN4,1));
 }
+
+void BoardTest::testEquals() {
+    mpBoard->addPiece(COLUMN0);//RED
+
+    Board nextBoard;
+    nextBoard.addPiece(COLUMN0);//RED
+    CPPUNIT_ASSERT(*mpBoard == nextBoard);
+
+    nextBoard.addPiece(COLUMN0);//YELLOW
+    CPPUNIT_ASSERT(! (*mpBoard == nextBoard));
+
+    mpBoard->addPiece(COLUMN0);//YELLOW
+    CPPUNIT_ASSERT( *mpBoard == nextBoard);
+
+    mpBoard->addPiece(COLUMN4);//RED
+    nextBoard.addPiece(COLUMN4);//RED
+    CPPUNIT_ASSERT( *mpBoard == nextBoard);
+}
+
+
+void BoardTest::testNextTurnBasic() {
+    mpBoard->addPiece(COLUMN0);//RED
+
+    Board nextBoard;
+    nextBoard.addPiece(COLUMN0);// RED
+    nextBoard.addPiece(COLUMN0);// YELLOW
+
+    std::vector<Board> boards = mpBoard->generateNextTurns();
+    CPPUNIT_ASSERT( boards[0] == nextBoard );
+
+    Board nextBoard2;
+    nextBoard2.addPiece(COLUMN0);// RED
+    nextBoard2.addPiece(COLUMN1);// YELLOW
+
+    CPPUNIT_ASSERT( boards[1] == nextBoard2);
+
+    Board nextBoard3;
+    nextBoard3.addPiece(COLUMN0);// RED
+    nextBoard3.addPiece(COLUMN2);// YELLOW
+
+    CPPUNIT_ASSERT( boards[2] == nextBoard3);
+
+
+
+    /// SKIP TO THE LAST COLUMN
+    Board nextBoard7;
+    nextBoard7.addPiece(COLUMN0);// RED
+    nextBoard7.addPiece(COLUMN6);// YELLOW
+
+    CPPUNIT_ASSERT( boards[6] == nextBoard7);
+}
+
+void BoardTest::testNextTurnAdvanced() {
+    mpBoard->addPiece(COLUMN6);//RED
+    mpBoard->addPiece(COLUMN5);//YELLOW
+    mpBoard->addPiece(COLUMN4);//RED
+    
+    std::vector<Board> boards = mpBoard->generateNextTurns();
+    Board nextBoard;
+    nextBoard.addPiece(COLUMN6);//RED
+    nextBoard.addPiece(COLUMN5);//YELLOW
+    nextBoard.addPiece(COLUMN4);//RED
+
+    Board nextTurn1(nextBoard);
+    nextTurn1.addPiece(COLUMN0);
+    CPPUNIT_ASSERT( boards[0] == nextTurn1);
+
+    Board nextTurn2(nextBoard);
+    nextTurn2.addPiece(COLUMN1);
+    CPPUNIT_ASSERT( boards[1] == nextTurn2);
+
+    Board nextTurn3(nextBoard);
+    nextTurn3.addPiece(COLUMN2);
+    CPPUNIT_ASSERT( boards[2] == nextTurn3);
+
+    Board nextTurn7(nextBoard);
+    nextTurn7.addPiece(COLUMN6);
+    CPPUNIT_ASSERT( boards[6] == nextTurn7);
+}
+

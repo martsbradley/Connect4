@@ -3,10 +3,10 @@
 class SDL_Texture;
 class SDL_Renderer;
 
-class PeiceAnimation {
+class PieceAnimation {
    
 public: 
-    PeiceAnimation(int aEndLevel, int aColumn, SDL_Texture* arButton);
+    PieceAnimation(int aEndLevel, int aColumn, SDL_Texture* arButton);
     void start();
     void finished();
     bool isFinished();

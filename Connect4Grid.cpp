@@ -3,7 +3,7 @@
 #include "RenderCode.h"
 #include "SDL.h"
 #include "SDL2/SDL_image.h"
-#include "PeiceAnimation.h"
+#include "PieceAnimation.h"
 #include <iostream>
 
 struct ColPositions {
@@ -24,8 +24,8 @@ static int halfButtonHeight;
 static std::vector<ColPositions> myColPositions;
 
 
-static struct NextPeice red = NextPeice(RED, 0);
-static struct NextPeice yellow = NextPeice(YELLOW, 0);
+  //static struct NextPiece red = NextPiece(RED, 0);
+  //static struct NextPiece yellow = NextPiece(YELLOW, 0);
 
 Connect4Grid::Connect4Grid(SDLGraphics& arGraphics)
   : mrGraphics(arGraphics),
@@ -36,9 +36,10 @@ Connect4Grid::Connect4Grid(SDLGraphics& arGraphics)
     mpYellowButton =  mrGraphics.loadTexture("images/yellowbutton.png");
     mpBoardTexture =  mrGraphics.loadFromFile("images/board2.png");
 
-    red = NextPeice(RED, mpRedButton);
-    yellow = NextPeice(YELLOW, mpYellowButton);
-    nextPeice = red;
+  //red = NextPiece(RED, mpRedButton);
+  //yellow = NextPiece(YELLOW, mpYellowButton);
+  //nextPiece = red;
+
 
     SDL_QueryTexture(mpBoardTexture, NULL, NULL, &mColumnWidth, &mColumnHeight);
     SDL_QueryTexture(mpRedButton, NULL, NULL, &mButtonWidth, &mButtonHeight);
@@ -82,7 +83,7 @@ void Connect4Grid::renderColumn(enum ColumnName column)
     int columnIdx =  column;
 
     for (int level = 0; level < Column::MaxHeight; ++level) {
-        Peice piece = mBoard.getPositionStatus(column, level);
+        Piece piece = mBoard.getPositionStatus(column, level);
         
         int x = getXCordinateForColumn(columnIdx);
         
@@ -107,7 +108,7 @@ void Connect4Grid::renderColumn(enum ColumnName column)
         else 
         {
             // Animations done, add the peice to the board.
-            mBoard.addPeice(nextPeice.next, (enum ColumnName)mpAnimation->getColumn());
+            mBoard.addPiece((enum ColumnName)mpAnimation->getColumn());
             delete mpAnimation;
             mpAnimation = 0;
         }
@@ -188,21 +189,24 @@ void Connect4Grid::handleEvent(SDL_Event& arEvent)
 
     if (col <= COLUMN6)
     {
-        if (nextPeice.next == RED)
-           nextPeice = yellow;
-        else 
-           nextPeice = red;
+        if (mpAnimation == 0   /*TODO*/ /*mBoard.canAddPiece((enum ColumnName)col)*/) {
 
-        if (mpAnimation == 0   /*TODO*/ /*mBoard.canAddPeice((enum ColumnName)col)*/) {
             startAnimation(col);
         }
-        
     }
 }
 void Connect4Grid::startAnimation(int col) {
-    int endLevel = mBoard.howManyPeicesInColumn((enum ColumnName)col);
+    int endLevel = mBoard.howManyPiecesInColumn((enum ColumnName)col);
 
     std::cout << "started animation on column " << col << std::endl;
-    mpAnimation = new PeiceAnimation(endLevel, col, nextPeice.pButton);
+
+    SDL_Texture* coin = mpRedButton;
+
+    if (mBoard.getNextPiece() == YELLOW)
+    {
+        coin = mpYellowButton;
+    }
+
+    mpAnimation = new PieceAnimation(endLevel, col, coin);
     mpAnimation->start();
 }

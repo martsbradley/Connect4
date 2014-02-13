@@ -5,26 +5,26 @@
 class SDLGraphics;
 class SDL_Texture;
 class SDL_Renderer;
-class PeiceAnimation;
+class PieceAnimation;
 union SDL_Event;
 
-struct NextPeice {
+//  struct NextPiece {
 
-   NextPeice() :
-      next(RED),
-      pButton(0)
-   {
-   }
+//     NextPiece() :
+//        next(RED),
+//        pButton(0)
+//     {
+//     }
 
-   NextPeice(Peice p, SDL_Texture*t) :
-      next(p),
-      pButton(t)
-   {
-   }
+//     NextPiece(Piece p, SDL_Texture*t) :
+//        next(p),
+//        pButton(t)
+//     {
+//     }
 
-   Peice next;
-   SDL_Texture* pButton;
-};
+//     Piece next;
+//     SDL_Texture* pButton;
+//  };
 
 class Connect4Grid {
 
@@ -50,8 +50,8 @@ private:
     SDLGraphics& mrGraphics;
 
     SDL_Renderer *mpRenderer;
-    struct NextPeice nextPeice;
+    //struct NextPiece nextPiece;
 
-    PeiceAnimation* mpAnimation;
+    PieceAnimation* mpAnimation;
 };
 #endif // CONNECT4GRID_H
