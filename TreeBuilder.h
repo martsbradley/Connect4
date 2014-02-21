@@ -9,8 +9,14 @@ static unsigned char Yellow = 2;
 class NextStates;
 class Board;
 
-int arrayIndex(int column, int level);
-int arrayIntraCharIndex(int column, int level);
+int getPosition(int column, int level);
+int getByteIndex(int column, int level);
+int getByteIndex(int aPosition);
+
+int getByteOffset(int column, int level);
+int getByteOffset(int aPosition);
+
+unsigned char getPieceBits(int aColumn, int aLevel, Piece aPiece);
 
 class GameState
 {
@@ -34,12 +40,13 @@ public:
     ~GameState();
     void setNextStates(NextStates* apNextStates);
     void setValue(int column,int level, enum Piece aPiece);
+    enum Piece getValueAtPosition(int aPosition);
 
-   void setGameState(Board& arBoard);
-   enum Piece getPosition(int aPos);
+    void setGameState(Board& arBoard);
+    void output();
 private:
 
-   unsigned char state[MAX_GAME_STATE];
+   unsigned char mState[MAX_GAME_STATE];
    NextStates* mpNextStates; // Each non terminal GameState
                             // Will have further possible
                             // GameStates that proceed it.
@@ -61,8 +68,10 @@ private:
 
 class TreeBuilder
 {
+public:
     TreeBuilder();
     void build(Board& arBoard, GameState* apGameState);
+    void buildTree(Board& arBoard);
 private:
     GameState* mpGameState;
 

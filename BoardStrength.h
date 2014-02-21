@@ -1,22 +1,9 @@
 #ifndef BOARDSTRENGTH_H
 #define BOARDSTRENGTH_H
 #include <vector>
+#include <string>
 #include "Board.h"
-
-class CellState 
-{
-public:
-   CellState();
-   CellState(int aPosition);
-   void setState(enum Piece aPiece);
-   enum Piece getState();
-   void setPosition(int aPosition);
-
-private:
-   enum Piece mState;
-   int mPosition;
-};
-
+class GameState;
 
 /**
      Split the search up into looking at blocks of 4
@@ -43,27 +30,32 @@ private:
 class StrengthSearch 
 {
 public:
-    void addSearchArray(CellState* apCells, int aCellIds[]);
+    void setGameState(GameState& arGameState);
+    void setLines(int aLineInfoArray[]);
 
     int getStrength();
+
+    void output();
 private:
-    std::vector<std::vector<CellState*> > searchData;
+    std::vector<std::string> searchData;
+    //  The line data will show which positions
+    //  Make up a line.  A -1 is a line break
+    std::vector<int> lineData;
 };
 
-class BoardStrength : public  BoardListener
+class BoardStrength// : public  BoardListener
 {
-     BoardStrength();
+ public:
+    BoardStrength();
+    void setTree(GameState& arGameState);
 
-      void peiceAdded(enum Piece aPiece, enum ColumnName aCol, int aLevel);
-      void clearBoarded();
+    enum ColumnName bestNextMove();
 
-     // array of all the board positions.
-     //CellState[]  cells;
-     
-   //StrengthSearch horizontal;
-     StrengthSearch vertical;
-   //StrengthSearch upDiagonal;
-   //StrengthSearch downDiagonal;
-     CellState cells[42];
+    void peiceAdded(enum Piece aPiece, enum ColumnName aCol, int aLevel);
+private:
+    StrengthSearch vertical;
+    StrengthSearch horizontal;
+    StrengthSearch upDiagonal;
+    StrengthSearch downDiagonal;
 };
 #endif //BOARDSTRENGTH_H

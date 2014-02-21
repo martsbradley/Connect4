@@ -77,6 +77,16 @@ void Connect4Grid::renderBoardOutline(){
         }
     }
 }
+static int verticalData[] ={0,  1,  2,  3,  4,  5,  -1,
+                     6,  7,  8,  9,  10, 11, -1,
+                     12, 13, 14, 15, 16, 17, -1,
+                     18, 19, 20, 21, 22, 23, -1,
+                     24, 25, 26, 27, 28, 29, -1,
+                     30, 31, 32, 33, 34, 35, -1,
+                     36, 37, 38, 39, 40, 41, -2};
+
+#include "BoardStrength.h"
+#include "TreeBuilder.h"
 
 void Connect4Grid::renderColumn(enum ColumnName column)
 {
@@ -111,6 +121,21 @@ void Connect4Grid::renderColumn(enum ColumnName column)
             mBoard.addPiece((enum ColumnName)mpAnimation->getColumn());
             delete mpAnimation;
             mpAnimation = 0;
+
+            GameState state;
+            state.setGameState(mBoard);
+            StrengthSearch vertical;
+            vertical.setLines(verticalData);
+            vertical.setGameState(state);
+            vertical.output();
+
+          //TreeBuilder tree;
+          //tree.buildTree(newboard);
+          //BoardStrength strength(tree);
+          //BoardStrength.setTree(tree);
+          //enum ColumnName col = //strength.bestNextMove();
+          //mBoard.addPiece(col);
+
         }
     }
 }
