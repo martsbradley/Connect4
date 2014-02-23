@@ -26,6 +26,9 @@ class GameState;
           None            4              0           16 (4*4)
 */
 
+#define WINNING_SCORE 1000000
+#define LOOSING_SCORE -1000000
+
 
 class StrengthSearch 
 {
@@ -37,25 +40,49 @@ public:
 
     void output();
 private:
-    std::vector<std::string> searchData;
+    std::vector<std::string> mSearchData;
     //  The line data will show which positions
     //  Make up a line.  A -1 is a line break
     std::vector<int> lineData;
 };
 
-class BoardStrength// : public  BoardListener
+class VerticalSearch : public StrengthSearch 
+{
+public: 
+    VerticalSearch();
+};
+
+class HorizontalSearch : public StrengthSearch 
+{
+public: 
+    HorizontalSearch();
+};
+
+class UpDiagonal : public StrengthSearch 
+{
+public: 
+    UpDiagonal();
+};
+
+class DownDiagonal : public StrengthSearch 
+{
+public: 
+    DownDiagonal();
+};
+
+
+class BoardStrength
 {
  public:
-    BoardStrength();
     void setTree(GameState& arGameState);
 
     enum ColumnName bestNextMove();
 
     void peiceAdded(enum Piece aPiece, enum ColumnName aCol, int aLevel);
 private:
-    StrengthSearch vertical;
-    StrengthSearch horizontal;
-    StrengthSearch upDiagonal;
-    StrengthSearch downDiagonal;
+    VerticalSearch vertical;
+    HorizontalSearch horizontal;
+    UpDiagonal upDiagonal;
+    DownDiagonal downDiagonal;
 };
 #endif //BOARDSTRENGTH_H
