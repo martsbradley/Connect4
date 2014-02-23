@@ -17,5 +17,7 @@ clean:
 	rm *.o game test
 
 
-test: TestRunner.o GameStateTest.o TreeBuilder.o BoardStrength.o Board.o BoardTest.o StrengthSearchTest.o
+test: TestRunner.o GameStateTest.o TreeBuilder.o BoardStrength.o Board.o BoardTest.o \
+        StrengthSearchTest.o BoardStrengthTest.o
 	$(CC) -o $@ $+ $(LDFLAGS) 
+

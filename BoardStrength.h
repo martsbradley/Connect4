@@ -38,7 +38,11 @@ public:
 
     int getStrength();
 
+
     void output();
+
+protected:
+    std::string mName;
 private:
     std::vector<std::string> mSearchData;
     //  The line data will show which positions
@@ -74,12 +78,12 @@ public:
 class BoardStrength
 {
  public:
+    BoardStrength();
     void setTree(GameState& arGameState);
 
-    enum ColumnName bestNextMove();
-
-    void peiceAdded(enum Piece aPiece, enum ColumnName aCol, int aLevel);
+    int getBoardStrength();
 private:
+    std::vector<StrengthSearch*> mBoardSearches;
     VerticalSearch vertical;
     HorizontalSearch horizontal;
     UpDiagonal upDiagonal;

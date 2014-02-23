@@ -89,9 +89,6 @@ void StrengthSearchTest::testUpDiagonal()
     mpBoard->addPiece(COLUMN4);// YELLOW
     mpBoard->addPiece(COLUMN3);// RED        
 
-
-
-
     GameState gameState;
     gameState.setGameState(*mpBoard);
     UpDiagonal upDiagonal;

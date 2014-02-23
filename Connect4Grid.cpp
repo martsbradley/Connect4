@@ -124,10 +124,15 @@ void Connect4Grid::renderColumn(enum ColumnName column)
 
             GameState state;
             state.setGameState(mBoard);
-            StrengthSearch vertical;
-            vertical.setLines(verticalData);
-            vertical.setGameState(state);
-            vertical.output();
+          //StrengthSearch vertical;
+          //vertical.setLines(verticalData);
+          //vertical.setGameState(state);
+          //vertical.output();
+
+            BoardStrength strength;
+            strength.setTree(state);
+            strength.getBoardStrength();
+
 
           //TreeBuilder tree;
           //tree.buildTree(newboard);
