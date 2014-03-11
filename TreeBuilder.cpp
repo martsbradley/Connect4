@@ -2,6 +2,7 @@
 #include "TreeBuilder.h"
 #include <string.h>
 #include <iostream>
+#include "Visitor.h"
 
 static unsigned char RED_BYTE    = 0b01000000;
 static unsigned char YELLOW_BYTE = 0b11000000;
@@ -15,13 +16,21 @@ GameState::GameState()
 
 GameState::~GameState()
 {
-   //TODO   should delete the children
+    // While leafs delete
+  //std::vector<GameState*> children;
+  //getChilden(children);
+  //std::cout << "There are " << children.size() << std::endl;
+ 
+    std::vector<GameState*>::iterator it; 
+
+    for (it = mNextStates.begin(); it != mNextStates.end(); ++it) 
+    {
+        GameState* pState= *it;
+        if (pState) delete pState;
+    }
+    //mNextStates.clear();
 }
 
-void GameState::setNextStates(NextStates* apNextStates)
-{
-   mpNextStates = apNextStates;
-}
 
 // Takes the current state of the Board
 // And builds the associated GameState
@@ -77,6 +86,19 @@ enum Piece GameState::getValueAtPosition(int aPosition)
     else if (theByte == YELLOW_BYTE)
         result = YELLOW;
     return result;
+}
+int GameState::getLevel() {
+    return mLevel;
+}
+int GameState::setLevel(int aLevel) {
+    mLevel = aLevel;
+}
+
+int GameState::getScore() {
+    return mScore;
+}
+int GameState::setScore(int aScore) {
+    mScore = aScore;
 }
 
 /**
@@ -151,42 +173,60 @@ int getByteOffset(int aPosition)
     return offset;
 }
 
-GameState* NextStates::getGameState(int n)
-{
-    return &gameState[n];
-}
-
-
 TreeBuilder::TreeBuilder()
 {
     mpGameState = new GameState();
+    mpGameState->setLevel(0);
 }
 
-int count = 0;
+TreeBuilder::~TreeBuilder()
+{
+    delete mpGameState;
+}
+
+int MAX_LEVEL = 3;
+
 void TreeBuilder::build(Board& arBoard, GameState* apGameState)
 {
-     if (count++ > 60000)
-        return;
-
      apGameState->setGameState(arBoard);
 
      std::vector<Board> nextBoards = arBoard.generateNextTurns();
 
-     if (!nextBoards.empty())
+     if (!nextBoards.empty() && apGameState->getLevel() < MAX_LEVEL)
      {
-         NextStates* pNextStates = new NextStates();
-         apGameState->setNextStates(pNextStates);
-
          std::vector<Board>::iterator itBoard; 
 
-         int n = 0;
-         for(itBoard = nextBoards.begin(); itBoard != nextBoards.end(); ++itBoard) {
-            build(*itBoard, pNextStates->getGameState(n++));
+         for(itBoard = nextBoards.begin(); itBoard != nextBoards.end(); ++itBoard)
+         {
+             GameState* pChild = new GameState();
+             pChild->setLevel(apGameState->getLevel()+1);
+             apGameState->addNextState(pChild);
+             build(*itBoard, pChild);
          }
      }
 }
 
 void TreeBuilder::buildTree(Board& arBoard)
 {
+    //count = 0;
     build(arBoard, mpGameState);
+}
+
+void GameState::accept(Visitor& arVisitor) 
+{
+    arVisitor.visit(*this);
+}
+
+GameState* TreeBuilder::getTree() {
+    return mpGameState;
+}
+
+void GameState::addNextState(GameState* apGameState)
+{
+    mNextStates.push_back(apGameState);
+}
+
+std::vector<GameState*>& GameState::getNextStates() 
+{
+    return mNextStates;
 }

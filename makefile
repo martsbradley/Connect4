@@ -7,17 +7,18 @@ all: game test
 
 
 
-game : main.o Board.o Game.o RenderCode.o PieceAnimation.o SDLGraphics.o BoardStrength.o TreeBuilder.o Connect4Grid.o 
-	$(CC) -o $@ $+ $(LDFLAGS) 
+game : main.o Board.o Game.o RenderCode.o PieceAnimation.o SDLGraphics.o BoardStrength.o TreeBuilder.o Connect4Grid.o \
+        ScoreVisitor.o DisplayVisitor.o
+	$(CC) -g -o $@ $+ $(LDFLAGS) 
 
 %.o: %.cpp
-	$(CC) -c $(CFLAGS) $< -o $@
+	$(CC) -g -c $(CFLAGS) $< -o $@
 
 clean:
 	rm *.o game test
 
 
 test: TestRunner.o GameStateTest.o TreeBuilder.o BoardStrength.o Board.o BoardTest.o \
-        StrengthSearchTest.o BoardStrengthTest.o
+        StrengthSearchTest.o BoardStrengthTest.o ScoreVisitor.o
 	$(CC) -o $@ $+ $(LDFLAGS) 
 

@@ -36,10 +36,10 @@ void StrengthSearch::output()
 {
   std::vector<std::string >::iterator it;
 
-  std::cout << "There are " << mSearchData.size() << std::endl;
-  for (it = mSearchData.begin(); it != mSearchData.end(); ++it) {
-      std::cout << *it << std::endl;
-  }
+//std::cout << "There are " << mSearchData.size() << std::endl;
+//for (it = mSearchData.begin(); it != mSearchData.end(); ++it) {
+//    std::cout << *it << std::endl;
+//}
 }
 
 static int scoreFourCells(std::string & arString)
@@ -162,7 +162,7 @@ int StrengthSearch::getStrength()
         }
         else
              score = worst;
-        std::cout << mName << " scored " << debugCount++ << " current " <<  thisScore << " total " << score << std::endl;
+        //std::cout << mName << " scored " << debugCount++ << " current " <<  thisScore << " total " << score << std::endl;
     }
 
 
@@ -274,10 +274,10 @@ int BoardStrength::getBoardStrength()
         if (currentScore > best) best = currentScore;
         if (currentScore < worst) worst = currentScore;
 
-      //if (currentScore == WINNING_SCORE || currentScore == LOOSING_SCORE) {
-      //   score = currentScore;
-      //   break;
-      //}
+        //if (currentScore == WINNING_SCORE || currentScore == LOOSING_SCORE) {
+        //   score = currentScore;
+        //   break;
+        //}
 
         if (best > abs(worst))
              score = best;

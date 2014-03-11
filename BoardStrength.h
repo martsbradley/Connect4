@@ -79,6 +79,8 @@ class BoardStrength
 {
  public:
     BoardStrength();
+
+    //  TODO this really needs its name fixed.
     void setTree(GameState& arGameState);
 
     int getBoardStrength();

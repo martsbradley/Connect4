@@ -8,6 +8,7 @@ static unsigned char Yellow = 2;
 
 class NextStates;
 class Board;
+class Visitor;
 
 int getPosition(int column, int level);
 int getByteIndex(int column, int level);
@@ -38,40 +39,37 @@ class GameState
 public:
     GameState();
     ~GameState();
-    void setNextStates(NextStates* apNextStates);
     void setValue(int column,int level, enum Piece aPiece);
     enum Piece getValueAtPosition(int aPosition);
 
     void setGameState(Board& arBoard);
     void output();
+
+    int getLevel();
+    int setLevel(int aLevel);
+    void accept(Visitor& arVisitor);
+
+    int getScore();
+    int setScore(int aScore);
+    void addNextState(GameState* apGameState);
+    std::vector<GameState*>& getNextStates();
 private:
 
-   unsigned char mState[MAX_GAME_STATE];
-   NextStates* mpNextStates; // Each non terminal GameState
-                            // Will have further possible
-                            // GameStates that proceed it.
+    //void getChilden(std::vector<GameState*>& children);
+    int mLevel;
+    int mScore;
+    unsigned char mState[MAX_GAME_STATE];
+    std::vector<GameState*> mNextStates;
 };
-
-class NextStates
-{
-    // This class holds at most seven different choices
-    // that a player could have made for thier turn
-
-public:
-    GameState* getGameState(int n);
-    
-private:
-    GameState gameState[7];
-};
-
-
 
 class TreeBuilder
 {
 public:
     TreeBuilder();
+    ~TreeBuilder();
     void build(Board& arBoard, GameState* apGameState);
     void buildTree(Board& arBoard);
+    GameState* getTree();
 private:
     GameState* mpGameState;
 

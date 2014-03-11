@@ -5,6 +5,8 @@
 #include "SDL2/SDL_image.h"
 #include "PieceAnimation.h"
 #include <iostream>
+#include "ScoreVisitor.h"
+#include "DisplayVisitor.h"
 
 struct ColPositions {
    ColPositions(int start,int end) : mStart(start), mEnd(end){}
@@ -122,24 +124,31 @@ void Connect4Grid::renderColumn(enum ColumnName column)
             delete mpAnimation;
             mpAnimation = 0;
 
-            GameState state;
-            state.setGameState(mBoard);
-          //StrengthSearch vertical;
-          //vertical.setLines(verticalData);
-          //vertical.setGameState(state);
-          //vertical.output();
+            TreeBuilder tree;
+            tree.buildTree(mBoard);
+            std::cout << "Tree built" << std::endl;
 
-            BoardStrength strength;
-            strength.setTree(state);
-            strength.getBoardStrength();
+            ScoreVisitor visitor;
+            GameState* pState = tree.getTree();
+            pState->accept(visitor);
+
+          //DisplayVisitor displayVisitor;
+          //pState->accept(displayVisitor);
 
 
-          //TreeBuilder tree;
-          //tree.buildTree(newboard);
-          //BoardStrength strength(tree);
-          //BoardStrength.setTree(tree);
-          //enum ColumnName col = //strength.bestNextMove();
-          //mBoard.addPiece(col);
+            /// maybe now a min max visitor
+
+
+            //GameState.acceptVisitor(ScoreVisitor) 
+
+
+
+            //TreeBuilder tree;
+            //tree.buildTree(newboard);
+            //BoardStrength strength(tree);
+            //BoardStrength.setTree(tree);
+            //enum ColumnName col = //strength.bestNextMove();
+            //mBoard.addPiece(col);
 
         }
     }
