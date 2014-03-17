@@ -51,6 +51,8 @@ public:
 
     int getScore();
     int setScore(int aScore);
+    void setMinMaxValue(int aMinMaxValue);
+    int getMinMaxValue();
     void addNextState(GameState* apGameState);
     std::vector<GameState*>& getNextStates();
 private:
@@ -58,6 +60,7 @@ private:
     //void getChilden(std::vector<GameState*>& children);
     int mLevel;
     int mScore;
+    int mMinMaxValue;
     unsigned char mState[MAX_GAME_STATE];
     std::vector<GameState*> mNextStates;
 };

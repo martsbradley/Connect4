@@ -131,24 +131,11 @@ void Connect4Grid::renderColumn(enum ColumnName column)
             ScoreVisitor visitor;
             GameState* pState = tree.getTree();
             pState->accept(visitor);
+            std::cout << "MinMaxScore " << pState->getMinMaxValue() << std::endl;
 
-          //DisplayVisitor displayVisitor;
-          //pState->accept(displayVisitor);
-
-
-            /// maybe now a min max visitor
-
-
-            //GameState.acceptVisitor(ScoreVisitor) 
-
-
-
-            //TreeBuilder tree;
-            //tree.buildTree(newboard);
-            //BoardStrength strength(tree);
-            //BoardStrength.setTree(tree);
-            //enum ColumnName col = //strength.bestNextMove();
-            //mBoard.addPiece(col);
+        //BoardStrength str;
+        //str.setTree(*pState);
+        //std::cout << "This board is " << str.getBoardStrength() << std::endl;
 
         }
     }

@@ -11,9 +11,12 @@ class ScoreVisitor: public Visitor
 {
 
 public:
-    virtual void visit(GameState& arGameState);
+    virtual void visit(GameState* apGameState);
 
 private:
+    void min(GameState* apGameState);
+    void max(GameState* apGameState);
+    void setup(GameState* apGameState);
     BoardStrength mStrength;
 };
 #endif // VISITOR_H

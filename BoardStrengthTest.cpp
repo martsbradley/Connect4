@@ -29,7 +29,7 @@ void BoardStrengthTest::testEmptyBoard()
     gameState.setGameState(*mpBoard);
 
     BoardStrength strength;
-    strength.setTree(gameState);
+    strength.setTree(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(0, strength.getBoardStrength()) ;
 }
@@ -49,7 +49,7 @@ void BoardStrengthTest::testFourRedSquares()
     gameState.setGameState(*mpBoard);
 
     BoardStrength strength;
-    strength.setTree(gameState);
+    strength.setTree(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(WINNING_SCORE, strength.getBoardStrength()) ;
 
@@ -69,11 +69,11 @@ void BoardStrengthTest::testThreeRedSquares()
     gameState.setGameState(*mpBoard);
 
     BoardStrength strength;
-    strength.setTree(gameState);
+    strength.setTree(&gameState);
 
     std::cout << "testThreeRedSquares" << std::endl;
     HorizontalSearch justForOutput;
-    justForOutput.setGameState(gameState);
+    justForOutput.setGameState(&gameState);
     justForOutput.output();
 
   /* Result is 1000 because looking from a vertical stand point.
@@ -111,10 +111,10 @@ void BoardStrengthTest::testThreeRedThreeYellow()
     gameState.setGameState(*mpBoard);
 
     BoardStrength strength;
-    strength.setTree(gameState);
+    strength.setTree(&gameState);
 
     VerticalSearch justForOutput;
-    justForOutput.setGameState(gameState);
+    justForOutput.setGameState(&gameState);
     justForOutput.output();
 
     std::cout << "testThreeRedThreeYellow" << std::endl;
@@ -151,7 +151,7 @@ void BoardStrengthTest::testUpDiagonal()
     GameState gameState;
     gameState.setGameState(*mpBoard);
     BoardStrength strength;
-    strength.setTree(gameState);
+    strength.setTree(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(WINNING_SCORE, strength.getBoardStrength()) ;
 }
@@ -185,7 +185,7 @@ void BoardStrengthTest::testTwoWinners()
   //justForOutput.output();
 
     BoardStrength strength;
-    strength.setTree(gameState);
+    strength.setTree(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(0, strength.getBoardStrength()) ;
 }

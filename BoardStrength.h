@@ -33,7 +33,7 @@ class GameState;
 class StrengthSearch 
 {
 public:
-    void setGameState(GameState& arGameState);
+    void setGameState(GameState* apGameState);
     void setLines(int aLineInfoArray[]);
 
     int getStrength();
@@ -81,7 +81,7 @@ class BoardStrength
     BoardStrength();
 
     //  TODO this really needs its name fixed.
-    void setTree(GameState& arGameState);
+    void setTree(GameState* apGameState);
 
     int getBoardStrength();
 private:

@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-void StrengthSearch::setGameState(GameState& arGameState)
+void StrengthSearch::setGameState(GameState* apGameState)
 {
     mSearchData.clear();
     std::vector<int>::iterator it = lineData.begin();
@@ -21,7 +21,7 @@ void StrengthSearch::setGameState(GameState& arGameState)
         }
         else {
             char value = ' ';
-            enum Piece piece = arGameState.getValueAtPosition(*it);
+            enum Piece piece = apGameState->getValueAtPosition(*it);
             if (piece == YELLOW)
                 value = 'Y';
             else if (piece == RED)
@@ -249,15 +249,15 @@ BoardStrength::BoardStrength()
    mBoardSearches.push_back(&downDiagonal);
 }
 
-void BoardStrength::setTree(GameState& arGameState)
+void BoardStrength::setTree(GameState* apGameState)
 {
     //  This method will update the 4 StrengthSearch objects
     //  with the details of this GameState
 
-    vertical.setGameState(arGameState);
-    horizontal.setGameState(arGameState);
-    upDiagonal.setGameState(arGameState);
-    downDiagonal.setGameState(arGameState);
+    vertical.setGameState(apGameState);
+    horizontal.setGameState(apGameState);
+    upDiagonal.setGameState(apGameState);
+    downDiagonal.setGameState(apGameState);
 
 }
 int BoardStrength::getBoardStrength()
@@ -271,24 +271,25 @@ int BoardStrength::getBoardStrength()
     {
         int currentScore = (*it)->getStrength();
 
-        if (currentScore > best) best = currentScore;
-        if (currentScore < worst) worst = currentScore;
+        if (currentScore > 0) best += currentScore;
+        if (currentScore < worst) worst += currentScore;
 
         //if (currentScore == WINNING_SCORE || currentScore == LOOSING_SCORE) {
         //   score = currentScore;
         //   break;
         //}
 
-        if (best > abs(worst))
-             score = best;
-        else if (best == abs(worst)) 
-        {
-              score = 0;
-        }
-        else
-             score = worst;
     }
 
-    std::cout << "BoardStrength is " << score << std::endl;
+    if (best > abs(worst))
+         score = best;
+    else if (best == abs(worst)) 
+    {
+          score = 0;
+    }
+    else
+         score = worst;
+
+    //std::cout << "BoardStrength is " << score << std::endl;
     return score;
 }

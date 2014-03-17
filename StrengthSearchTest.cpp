@@ -27,7 +27,7 @@ void StrengthSearchTest::testFourEmptySquares()
     GameState gameState;
     gameState.setGameState(*mpBoard);
     VerticalSearch vertical;
-    vertical.setGameState(gameState);
+    vertical.setGameState(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(0, vertical.getStrength()) ;
 }
@@ -45,7 +45,7 @@ void StrengthSearchTest::testFourRedSquares()
 
     gameState.setGameState(*mpBoard);
     VerticalSearch vertical;
-    vertical.setGameState(gameState);
+    vertical.setGameState(&gameState);
     //vertical.output();
 
     CPPUNIT_ASSERT_EQUAL(WINNING_SCORE, vertical.getStrength()) ;
@@ -68,7 +68,7 @@ void StrengthSearchTest::testFourYellowSquares()
 
     gameState.setGameState(*mpBoard);
     VerticalSearch vertical;
-    vertical.setGameState(gameState);
+    vertical.setGameState(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(LOOSING_SCORE, vertical.getStrength()) ;
 }
@@ -92,7 +92,7 @@ void StrengthSearchTest::testUpDiagonal()
     GameState gameState;
     gameState.setGameState(*mpBoard);
     UpDiagonal upDiagonal;
-    upDiagonal.setGameState(gameState);
+    upDiagonal.setGameState(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(WINNING_SCORE, upDiagonal.getStrength()) ;
 }

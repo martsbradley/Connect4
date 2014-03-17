@@ -9,6 +9,9 @@ static unsigned char YELLOW_BYTE = 0b11000000;
 static unsigned char BLANK_BYTE =  0b00000000; 
 
 GameState::GameState()
+   :mMinMaxValue(0),
+    mLevel(0),
+    mScore(0)
 {
    for (int x = 0; x < 11;x++)
        mState[x] = BLANK_BYTE;
@@ -101,6 +104,15 @@ int GameState::setScore(int aScore) {
     mScore = aScore;
 }
 
+int GameState::getMinMaxValue() 
+{
+    return mMinMaxValue;
+}
+void GameState::setMinMaxValue(int aMinMaxValue)
+{
+    mMinMaxValue = aMinMaxValue;
+}
+
 /**
  * column values 0 to 6
  * level values  0 to 5
@@ -184,7 +196,7 @@ TreeBuilder::~TreeBuilder()
     delete mpGameState;
 }
 
-int MAX_LEVEL = 3;
+int MAX_LEVEL = 4;
 
 void TreeBuilder::build(Board& arBoard, GameState* apGameState)
 {
@@ -214,7 +226,7 @@ void TreeBuilder::buildTree(Board& arBoard)
 
 void GameState::accept(Visitor& arVisitor) 
 {
-    arVisitor.visit(*this);
+    arVisitor.visit(this);
 }
 
 GameState* TreeBuilder::getTree() {

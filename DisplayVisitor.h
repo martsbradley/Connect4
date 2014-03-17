@@ -10,7 +10,7 @@ class DisplayVisitor: public Visitor
 {
 
 public:
-    virtual void visit(GameState& arGameState);
+    virtual void visit(GameState* apGameState);
 
 private:
 };
