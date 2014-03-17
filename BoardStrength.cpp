@@ -36,10 +36,10 @@ void StrengthSearch::output()
 {
   std::vector<std::string >::iterator it;
 
-//std::cout << "There are " << mSearchData.size() << std::endl;
-//for (it = mSearchData.begin(); it != mSearchData.end(); ++it) {
-//    std::cout << *it << std::endl;
-//}
+  std::cout << "There are " << mSearchData.size() << std::endl;
+  for (it = mSearchData.begin(); it != mSearchData.end(); ++it) {
+      std::cout << *it << std::endl;
+  }
 }
 
 static int scoreFourCells(std::string & arString)

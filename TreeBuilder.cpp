@@ -200,22 +200,22 @@ int MAX_LEVEL = 4;
 
 void TreeBuilder::build(Board& arBoard, GameState* apGameState)
 {
-     apGameState->setGameState(arBoard);
+    apGameState->setGameState(arBoard);
 
-     std::vector<Board> nextBoards = arBoard.generateNextTurns();
+    std::vector<Board> nextBoards = arBoard.generateNextTurns();
 
-     if (!nextBoards.empty() && apGameState->getLevel() < MAX_LEVEL)
-     {
-         std::vector<Board>::iterator itBoard; 
+    if (!nextBoards.empty() && apGameState->getLevel() < MAX_LEVEL)
+    {
+        std::vector<Board>::iterator itBoard; 
 
-         for(itBoard = nextBoards.begin(); itBoard != nextBoards.end(); ++itBoard)
-         {
-             GameState* pChild = new GameState();
-             pChild->setLevel(apGameState->getLevel()+1);
-             apGameState->addNextState(pChild);
-             build(*itBoard, pChild);
-         }
-     }
+        for(itBoard = nextBoards.begin(); itBoard != nextBoards.end(); ++itBoard)
+        {
+            GameState* pChild = new GameState();
+            pChild->setLevel(apGameState->getLevel()+1);
+            apGameState->addNextState(pChild);
+            build(*itBoard, pChild);
+        }
+    }
 }
 
 void TreeBuilder::buildTree(Board& arBoard)
