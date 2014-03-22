@@ -12,6 +12,7 @@ class BoardTest : public CppUnit::TestFixture
     CPPUNIT_TEST( testNextTurnBasic );
     CPPUNIT_TEST( testNextTurnAdvanced );
     CPPUNIT_TEST( testEquals );
+    CPPUNIT_TEST( testGenerateNextTurns );
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -22,6 +23,7 @@ public:
     void testNextTurnBasic();
     void testNextTurnAdvanced();
     void testEquals();
+    void testGenerateNextTurns();
 
 private:
     Board* mpBoard;

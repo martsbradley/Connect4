@@ -15,6 +15,9 @@ class GameStateTest : public CppUnit::TestFixture
     CPPUNIT_TEST( testByteIndex );
     CPPUNIT_TEST( testSetValue );
     CPPUNIT_TEST( testSetGameState );
+    CPPUNIT_TEST( testColumnHeightsEmpty );
+    CPPUNIT_TEST( testColumnHeightsAcending );
+    CPPUNIT_TEST( testColumnHeightsFullColumn );
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -28,6 +31,9 @@ public:
     void testByteIndex();
     void testSetValue();
     void testSetGameState();
+    void testColumnHeightsEmpty();
+    void testColumnHeightsAcending();
+    void testColumnHeightsFullColumn();
 
 private:
     GameState* mpGameState;

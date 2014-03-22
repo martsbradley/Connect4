@@ -62,6 +62,7 @@ public:
     std::vector<Board> generateNextTurns();
 
     bool operator==(const Board& arBoard) const;
+    bool canAddPiece(enum ColumnName column);
 private:
     std::vector<Column> mColumns;
     std::vector<BoardListener*> mListeners;

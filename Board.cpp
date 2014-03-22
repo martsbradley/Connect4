@@ -172,3 +172,14 @@ std::vector<Board> Board::generateNextTurns()
 
     return boards;
 }
+
+bool Board::canAddPiece(enum ColumnName column)
+{
+    checkColumn(column, mColumns);
+
+    return !mColumns[column].isFull();
+}
+
+
+
+

@@ -144,3 +144,54 @@ void BoardTest::testNextTurnAdvanced() {
     CPPUNIT_ASSERT( boards[6] == nextTurn7);
 }
 
+
+void BoardTest::testGenerateNextTurns() {
+    mpBoard->addPiece(COLUMN0);//RED
+    mpBoard->addPiece(COLUMN0);//YELLOW
+    mpBoard->addPiece(COLUMN0);//RED
+    mpBoard->addPiece(COLUMN0);//YELLOW
+    mpBoard->addPiece(COLUMN0);//RED
+    mpBoard->addPiece(COLUMN0);//YELLOW
+
+    CPPUNIT_ASSERT_EQUAL(RED, mpBoard->getNextPiece());
+
+    std::vector<Board> nextBoards = mpBoard->generateNextTurns();
+
+    CPPUNIT_ASSERT( 6 == nextBoards.size());
+
+    std::vector<Board>::iterator it;
+
+    for (it = nextBoards.begin(); it != nextBoards.end(); ++it)
+    {
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN0) == false);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN1) == true);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN2) == true);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN3) == true);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN4) == true);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN5) == true);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN6) == true);
+        CPPUNIT_ASSERT_EQUAL(YELLOW, it->getNextPiece());
+    }
+    //  Checks two generations.
+    CPPUNIT_ASSERT_EQUAL(RED, nextBoards[0].generateNextTurns()[0].getNextPiece());
+
+    mpBoard->addPiece(COLUMN1);//RED
+    mpBoard->addPiece(COLUMN1);//YELLOW
+    mpBoard->addPiece(COLUMN1);//RED
+    mpBoard->addPiece(COLUMN1);//YELLOW
+    mpBoard->addPiece(COLUMN1);//RED
+    mpBoard->addPiece(COLUMN1);//YELLOW
+
+    nextBoards = mpBoard->generateNextTurns();
+    CPPUNIT_ASSERT( 5 == nextBoards.size());
+    for (it = nextBoards.begin(); it != nextBoards.end(); ++it)
+    {
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN0) == false);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN1) == false);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN2) == true);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN3) == true);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN4) == true);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN5) == true);
+        CPPUNIT_ASSERT( it->canAddPiece(COLUMN6) == true);
+    }
+}

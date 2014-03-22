@@ -21,8 +21,6 @@ void PieceAnimation::start()
 {
    mStartTime = SDL_GetTicks();
 }
-    
-int times = 0;
 
 void PieceAnimation::render(SDL_Renderer *apRenderer)
 {

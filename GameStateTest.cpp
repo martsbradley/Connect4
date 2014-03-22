@@ -169,3 +169,65 @@ void GameStateTest::testSetGameState()
     TreeBuilder tree;
     tree.buildTree(newboard);
 }
+
+void GameStateTest::testColumnHeightsEmpty()
+{
+    Board board;
+
+    mpGameState->setGameState(board);
+
+    std::vector<int> heights = mpGameState->getColumnsHeights();
+
+    CPPUNIT_ASSERT(7 == heights.size());
+
+    std::vector<int>::iterator it;
+
+    for (it = heights.begin(); it != heights.end();++it)
+    {
+        CPPUNIT_ASSERT(0 == *it);
+    }
+}
+
+void GameStateTest::testColumnHeightsAcending()
+{
+    Board board;
+    board.addPiece(COLUMN0);
+
+    mpGameState->setGameState(board);
+
+    std::vector<int> heights = mpGameState->getColumnsHeights();
+
+    CPPUNIT_ASSERT(7 == heights.size());
+    CPPUNIT_ASSERT(1 == heights[0]);
+    CPPUNIT_ASSERT(0 == heights[1]);
+    CPPUNIT_ASSERT(0 == heights[2]);
+    CPPUNIT_ASSERT(0 == heights[3]);
+    CPPUNIT_ASSERT(0 == heights[4]);
+    CPPUNIT_ASSERT(0 == heights[5]);
+    CPPUNIT_ASSERT(0 == heights[6]);
+}
+
+void GameStateTest::testColumnHeightsFullColumn()
+{
+    Board board;
+    board.addPiece(COLUMN0);
+    board.addPiece(COLUMN0);
+    board.addPiece(COLUMN0);
+    board.addPiece(COLUMN0);
+    board.addPiece(COLUMN0);
+    board.addPiece(COLUMN0);
+
+    mpGameState->setGameState(board);
+
+    std::vector<int> heights = mpGameState->getColumnsHeights();
+
+    int size = heights.size();
+    CPPUNIT_ASSERT_EQUAL(7 , size);
+    CPPUNIT_ASSERT_EQUAL(6 , heights[0]);
+    CPPUNIT_ASSERT_EQUAL(0 , heights[1]);
+    CPPUNIT_ASSERT_EQUAL(0 , heights[2]);
+    CPPUNIT_ASSERT_EQUAL(0 , heights[3]);
+    CPPUNIT_ASSERT_EQUAL(0 , heights[4]);
+    CPPUNIT_ASSERT_EQUAL(0 , heights[5]);
+    CPPUNIT_ASSERT_EQUAL(0 , heights[6]);
+}

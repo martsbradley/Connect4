@@ -55,6 +55,7 @@ public:
     int getMinMaxValue();
     void addNextState(GameState* apGameState);
     std::vector<GameState*>& getNextStates();
+    std::vector<int> getColumnsHeights();
 private:
 
     //void getChilden(std::vector<GameState*>& children);

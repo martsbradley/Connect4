@@ -238,7 +238,94 @@ void GameState::addNextState(GameState* apGameState)
     mNextStates.push_back(apGameState);
 }
 
+struct BottomTop{
+    BottomTop(int a,int b): bottom(a),top(b){} 
+    int bottom;
+    int top;
+};
+
+/**
+  This method will compare this game state to that one.
+  The returned result will contain the columsn that are different
+  */
+std::vector<int> GameState::getColumnsHeights()
+{
+    //  0   6   12  18  24  30  36
+    //  1   7   13  19  25  31  37
+    //  2   8   14  20  26  32  38
+    //  3   9   15  21  27  33  39
+    //  4   10  16  22  28  34  40
+    //  5   11  17  23  29  35  41
+
+     
+    std::vector<BottomTop> startEnd;
+    startEnd.push_back(BottomTop(5,0));
+    startEnd.push_back(BottomTop(11,6));
+    startEnd.push_back(BottomTop(17,12));
+    startEnd.push_back(BottomTop(23,18));
+    startEnd.push_back(BottomTop(29,24));
+    startEnd.push_back(BottomTop(35,30));
+    startEnd.push_back(BottomTop(41,36));
+
+    std::vector<int> columnHeight;
+
+    std::vector<BottomTop>::iterator it = startEnd.begin();
+
+    while (it != startEnd.end())
+    {
+        int height = 0;
+        for (int pos = it->bottom;pos >= it->top; pos--)
+        {
+            enum Piece piece = getValueAtPosition(pos);
+            if (piece == EMPTY)
+            {
+                break;
+            }
+            else
+            {
+                height++;
+            }
+        }
+        columnHeight.push_back(height);
+        ++it;
+    }
+    return columnHeight;
+}
+
 std::vector<GameState*>& GameState::getNextStates() 
 {
     return mNextStates;
+}
+void GameState::output()
+{
+    //  0   6   12  18  24  30  36
+    //  1   7   13  19  25  31  37
+    //  2   8   14  20  26  32  38
+    //  3   9   15  21  27  33  39
+    //  4   10  16  22  28  34  40
+    //  5   11  17  23  29  35  41
+    for (int rowStartPos = 0 ; rowStartPos <= 5;rowStartPos++)
+    {
+        int times = 0;
+        int pos = rowStartPos;
+        while(times < 7)
+        {
+            enum Piece piece = getValueAtPosition(pos);
+            if (piece == RED)
+            {
+                std::cout << "R";
+            }
+            else if (piece == YELLOW) 
+            {
+                std::cout << "Y";
+            }
+            else
+            {
+                std::cout << " ";
+            }
+            pos += 6;
+            times++;
+        }
+        std::cout << std::endl;
+    }
 }

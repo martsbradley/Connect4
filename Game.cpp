@@ -173,6 +173,7 @@ void Game::play()
     while (!quit) 
     {
         quit = handleEvents();
+        mpGrid->updateGame();
         renderScene();
         
         // After we handle events, we apply the surface, update the screen, then increment the frameCounter counter.

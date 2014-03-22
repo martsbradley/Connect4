@@ -26,27 +26,67 @@ public:
     }
 };
 
+ScoreVisitor::ScoreVisitor()
+  : mColumnToInsert(0),
+    mGameOver(false)
+{
+}
+
+bool ScoreVisitor::isGameOver()
+{
+    return mGameOver;
+}
+
+
+void displayScore(GameState* pState)
+{
+	std::cout << "Score " << pState->getMinMaxValue() << std::endl;
+}
 void ScoreVisitor::visit(GameState* apGameState)
 {
     min(apGameState);
-
-    std::cout << "score is " << apGameState->getMinMaxValue() << std::endl;
-
-
+    if (abs(apGameState->getMinMaxValue()) >= 1000000)
+    {
+       std::cout << "Game must be over because " << apGameState->getMinMaxValue() << std::endl;
+    	mGameOver = true;
+    }
 
     ValueEquals va(apGameState->getMinMaxValue());
 
     std::vector<GameState*>& states =  apGameState->getNextStates();
+    std::for_each(states.begin(), states.end(), displayScore);
 
     std::vector<GameState*>::iterator it = std::find_if(states.begin(),
                                                         states.end(),
                                                         va);
     if (it != states.end())
     {
-        std::cout <<" Found it" << std::endl;    
-        VerticalSearch se;
-        se.setGameState(*it);
-        se.output();
+        std::cout << "Found it" << std::endl;
+        (*it)->output();
+
+        std::vector<int> heightsBeforeMove = apGameState->getColumnsHeights();
+        std::vector<int> heightsAfterMove = (*it)->getColumnsHeights();
+
+        std::vector<int>::iterator itAfter = heightsAfterMove.begin();
+        std::vector<int>::iterator itBefore = heightsBeforeMove.begin();
+
+        int counter = 0;
+        while (itAfter != heightsAfterMove.end())
+        {
+           int colHeightAfter = *itAfter;
+           int colHeightBefore =  *itBefore;
+           std::cout << "colHeightBefore " << colHeightBefore << " colHeightAfter " << colHeightAfter <<std::endl;
+
+           if (colHeightAfter > colHeightBefore)
+           {
+               mColumnToInsert= counter;
+               //break;
+           }
+           counter++;
+           itAfter++;
+           itBefore++;
+        }
+        //std::cout << "Counter = " << mColumnToInsert << std::endl;
     }
 }
 
@@ -120,12 +160,20 @@ void ScoreVisitor::min(GameState* apGameState)
 {
     std::vector<GameState*>& states =  apGameState->getNextStates();
 
-    if (states.size() == 0)
+    mStrength.setTree(apGameState);
+	int score = mStrength.getBoardStrength();
+
+	bool winner = false;
+
+	if (abs(score) >= 1000000) winner = true;
+
+
+    if (states.size() == 0 || winner)
     {
-        mStrength.setTree(apGameState); 
-        int score = mStrength.getBoardStrength();
+//        mStrength.setTree(apGameState);
+//        int score = mStrength.getBoardStrength();
         apGameState->setMinMaxValue(score);
-        std::cout << "set the min score to " << score << std::endl;
+        //std::cout << "set the min score to " << score << std::endl;
     }
     else
     {
@@ -147,16 +195,29 @@ void ScoreVisitor::min(GameState* apGameState)
     }
 }
 
+int ScoreVisitor::getBestCol()
+{
+    return mColumnToInsert;
+}
+
 void ScoreVisitor::max(GameState* apGameState)
 {
     std::vector<GameState*>& states =  apGameState->getNextStates();
 
-    if (states.size() == 0)
+    mStrength.setTree(apGameState);
+  	int score = mStrength.getBoardStrength();
+	bool winner = false;
+
+	if (abs(score) >= 1000000) winner = true;
+
+
+
+    if (states.size() == 0 || winner)
     {
-        mStrength.setTree(apGameState); 
-        int score = mStrength.getBoardStrength();
+//        mStrength.setTree(apGameState);
+//        int score = mStrength.getBoardStrength();
         apGameState->setMinMaxValue(score);
-        std::cout << "set the max score" << std::endl;
+        //std::cout << "set the max score" << std::endl;
     }
     else
     {

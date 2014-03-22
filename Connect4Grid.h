@@ -35,6 +35,7 @@ public:
     void renderBoard();
 
     void handleEvent(SDL_Event& arEvent);
+    void updateGame();
 private:
     void renderColumn(enum ColumnName column);
     void renderBoardOutline();
