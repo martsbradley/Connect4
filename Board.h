@@ -63,9 +63,14 @@ public:
 
     bool operator==(const Board& arBoard) const;
     bool canAddPiece(enum ColumnName column);
+    bool isGameOver();
+	void setGameOver(bool aGameOver);
 private:
     std::vector<Column> mColumns;
     std::vector<BoardListener*> mListeners;
     Piece nextPiece;
+    bool mGameOver;
+
+
 };
 #endif  // BOARD_H

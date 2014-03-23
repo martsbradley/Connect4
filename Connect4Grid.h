@@ -36,6 +36,8 @@ public:
 
     void handleEvent(SDL_Event& arEvent);
     void updateGame();
+    bool isGameOver();
+    void setGameOver(bool aGameOver);
 private:
     void renderColumn(enum ColumnName column);
     void renderBoardOutline();

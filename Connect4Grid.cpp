@@ -224,7 +224,7 @@ void Connect4Grid::handleEvent(SDL_Event& arEvent)
         }
     }
 
-    if (col <= COLUMN6)
+    if (!mBoard.isGameOver() && col <= COLUMN6)
     {
         startAnimation(col);
     }
@@ -251,6 +251,11 @@ void Connect4Grid::startAnimation(int col) {
 
 void Connect4Grid::updateGame()
 {
+	if (mBoard.isGameOver() == true)
+	{
+		return;
+	}
+
     if (mBoard.getNextPiece() == YELLOW && (mpAnimation == 0 || mpAnimation->isFinished()))
     {
         // This hard work should be removed from the event thread.
@@ -275,4 +280,27 @@ void Connect4Grid::updateGame()
              std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
         }
     }
+
+	GameState state;
+	state.setGameState(mBoard);
+
+	BoardStrength strength;
+	strength.setTree(&state);
+
+	if (abs(strength.getBoardStrength()) > 1000000)
+	{
+	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
+	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
+	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
+	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
+	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
+	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
+	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
+
+
+
+
+	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
+		mBoard.setGameOver(true);
+	}
 }

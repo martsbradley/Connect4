@@ -71,6 +71,7 @@ Board::Board() {
     mColumns.push_back(Column(5));
     mColumns.push_back(Column(6));
     nextPiece = RED;
+    mGameOver = false;
 }
 Board::Board(const Board& arBoard) {
     mColumns.push_back(arBoard.mColumns[0]);
@@ -81,6 +82,7 @@ Board::Board(const Board& arBoard) {
     mColumns.push_back(arBoard.mColumns[5]);
     mColumns.push_back(arBoard.mColumns[6]);
     nextPiece = arBoard.nextPiece;
+    mGameOver = arBoard.mGameOver;
 }
 
 void Board::reset()
@@ -89,6 +91,7 @@ void Board::reset()
     for (it = mColumns.begin(); it != mColumns.end(); it++) {
         it->reset();
     }
+    mGameOver = false;
 }
 
 // helper method avoids polluting the interface of the class.
@@ -180,6 +183,16 @@ bool Board::canAddPiece(enum ColumnName column)
     return !mColumns[column].isFull();
 }
 
+
+bool Board::isGameOver()
+{
+	return mGameOver;
+}
+
+void Board::setGameOver(bool aGameOver)
+{
+	mGameOver = aGameOver;
+}
 
 
 
