@@ -59,37 +59,39 @@ Connect4Grid::Connect4Grid(SDLGraphics& arGraphics)
          ColPositions pos(x, x+mButtonWidth);
          myColPositions.push_back(pos);
     }
-    mBoard.addPiece((enum ColumnName)4);
-    mBoard.addPiece((enum ColumnName)4);
+    mBoard.addPiece((enum ColumnName)6);
+    mBoard.addPiece((enum ColumnName)2);
     mBoard.addPiece((enum ColumnName)3);
     mBoard.addPiece((enum ColumnName)2);
     mBoard.addPiece((enum ColumnName)2);
-    mBoard.addPiece((enum ColumnName)2);
-    mBoard.addPiece((enum ColumnName)2);
-    mBoard.addPiece((enum ColumnName)1);
-    mBoard.addPiece((enum ColumnName)4);
     mBoard.addPiece((enum ColumnName)0);
-    mBoard.addPiece((enum ColumnName)2);
-    mBoard.addPiece((enum ColumnName)1);
-    mBoard.addPiece((enum ColumnName)1);
-    mBoard.addPiece((enum ColumnName)1);
     mBoard.addPiece((enum ColumnName)4);
-    mBoard.addPiece((enum ColumnName)4);
-    mBoard.addPiece((enum ColumnName)2);
+    mBoard.addPiece((enum ColumnName)5);
     mBoard.addPiece((enum ColumnName)3);
+    mBoard.addPiece((enum ColumnName)2);
+    mBoard.addPiece((enum ColumnName)2);
     mBoard.addPiece((enum ColumnName)1);
-    mBoard.addPiece((enum ColumnName)6);
-    mBoard.addPiece((enum ColumnName)6);
-    mBoard.addPiece((enum ColumnName)1);
-    mBoard.addPiece((enum ColumnName)4);
+    mBoard.addPiece((enum ColumnName)3);
+    mBoard.addPiece((enum ColumnName)3);
+    mBoard.addPiece((enum ColumnName)3);
     mBoard.addPiece((enum ColumnName)0);
+    mBoard.addPiece((enum ColumnName)0);
+    mBoard.addPiece((enum ColumnName)3);
     mBoard.addPiece((enum ColumnName)6);
+    mBoard.addPiece((enum ColumnName)2);
+    mBoard.addPiece((enum ColumnName)0);
+    mBoard.addPiece((enum ColumnName)5);
+    mBoard.addPiece((enum ColumnName)5);
+    mBoard.addPiece((enum ColumnName)0);
+    mBoard.addPiece((enum ColumnName)0);
     mBoard.addPiece((enum ColumnName)6);
     mBoard.addPiece((enum ColumnName)5);
     mBoard.addPiece((enum ColumnName)6);
     mBoard.addPiece((enum ColumnName)6);
     mBoard.addPiece((enum ColumnName)5);
-    //mBoard.addPiece((enum ColumnName)5);
+    mBoard.addPiece((enum ColumnName)5);
+    mBoard.addPiece((enum ColumnName)1);
+//    mBoard.addPiece((enum ColumnName)1);
 
 }
 Connect4Grid::~Connect4Grid() {
@@ -112,13 +114,13 @@ void Connect4Grid::renderBoardOutline(){
         }
     }
 }
-static int verticalData[] ={ 0,  1,  2,  3,  4,  5, -1,
-                             6,  7,  8,  9, 10, 11, -1,
-                            12, 13, 14, 15, 16, 17, -1,
-                            18, 19, 20, 21, 22, 23, -1,
-                            24, 25, 26, 27, 28, 29, -1,
-                            30, 31, 32, 33, 34, 35, -1,
-                            36, 37, 38, 39, 40, 41, -2};
+ // static int verticalData[] ={ 0,  1,  2,  3,  4,  5, -1,
+ //                              6,  7,  8,  9, 10, 11, -1,
+ //                             12, 13, 14, 15, 16, 17, -1,
+ //                             18, 19, 20, 21, 22, 23, -1,
+ //                             24, 25, 26, 27, 28, 29, -1,
+ //                             30, 31, 32, 33, 34, 35, -1,
+ //                             36, 37, 38, 39, 40, 41, -2};
 
 #include "BoardStrength.h"
 #include "TreeBuilder.h"
@@ -157,6 +159,19 @@ void Connect4Grid::renderColumn(enum ColumnName column)
             std::cout << "addPiece((enum ColumnName)"<< (enum ColumnName)mpAnimation->getColumn() << ");" << std::endl;
             delete mpAnimation;
             mpAnimation = 0;
+
+            //  if the game is over update the mBoard object.
+            GameState state;
+            state.setGameState(mBoard);
+
+            BoardStrength strength;
+            strength.setTree(&state);
+
+            if (abs(strength.getBoardStrength()) >= 1000000)
+            {
+                std::cout << "GAME OVERGAME"  << std::endl;
+                mBoard.setGameOver(true);
+            }
         }
     }
 }
@@ -286,21 +301,12 @@ void Connect4Grid::updateGame()
         int columnId = visitor.getBestCol();
 
         enum ColumnName column = (enum ColumnName)columnId;
+        if (!mBoard.canAddPiece(column))
+            std::cout << "Failed trying to put it into "<< column << std::endl;
+
         assert(mBoard.canAddPiece(column));
 
         startAnimation(column);
     }
 
-	GameState state;
-	state.setGameState(mBoard);
-
-	BoardStrength strength;
-	strength.setTree(&state);
-
-	if (abs(strength.getBoardStrength()) >= 1000000)
-	{
-	   std::cout << "GAME OVERGAME"  << std::endl;
-
-		mBoard.setGameOver(true);
-	}
 }

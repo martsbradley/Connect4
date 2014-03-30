@@ -13,11 +13,13 @@ class BoardStrengthTest : public CppUnit::TestFixture
   //CPPUNIT_TEST( testThreeRedSquares );
   //CPPUNIT_TEST( testThreeRedThreeYellow );
   //CPPUNIT_TEST( testUpDiagonal );
-  CPPUNIT_TEST( testTwoWinners );
+  //CPPUNIT_TEST( testTwoWinners );
   //CPPUNIT_TEST( testNonWin );
   //CPPUNIT_TEST( testNonWin2 );
   //CPPUNIT_TEST( testNonWin3 );
   //CPPUNIT_TEST( testNonWin4 );
+
+    CPPUNIT_TEST(testNonWin5 ) ;
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -33,6 +35,7 @@ public:
     void testNonWin2();
     void testNonWin3();
     void testNonWin4();
+    void testNonWin5();
 private:
     Board* mpBoard;
 };

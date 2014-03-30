@@ -1,5 +1,5 @@
 CC      = g++
-CFLAGS  = `pkg-config --cflags SDL2_image sdl2 cppunit` -g -std=c++11 
+CFLAGS  = `pkg-config --cflags SDL2_image sdl2 cppunit` -g -std=c++11 -Wall
 LDFLAGS = `pkg-config --libs SDL2_image sdl2 cppunit`
 
 all: game test

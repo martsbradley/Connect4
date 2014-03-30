@@ -1,8 +1,8 @@
 #ifndef TREEBUILDER_H
 #define TREEBUILDER_H
-static unsigned char Empty =  0;
-static unsigned char Red   =  1;
-static unsigned char Yellow = 2;
+//static unsigned char Empty =  0;
+//static unsigned char Red   =  1;
+//static unsigned char Yellow = 2;
 #define MAX_GAME_STATE 11
 #include "Board.h"
 
@@ -46,11 +46,11 @@ public:
     void output();
 
     int getLevel();
-    int setLevel(int aLevel);
+    void setLevel(int aLevel);
     void accept(Visitor& arVisitor);
 
     int getScore();
-    int setScore(int aScore);
+    void setScore(int aScore);
     void setMinMaxValue(int aMinMaxValue);
     int getMinMaxValue();
     void addNextState(GameState* apGameState);

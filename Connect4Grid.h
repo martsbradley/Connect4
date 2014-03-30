@@ -33,7 +33,6 @@ public:
     ~Connect4Grid();
 //  below members will be removed to subclass
     void renderBoard();
-
     void handleEvent(SDL_Event& arEvent);
     void updateGame();
     bool isGameOver();
@@ -45,7 +44,6 @@ private:
     void startAnimation(int col);
 
     Board mBoard;
-
     //SDL_Texture* image;
     SDL_Texture* mpRedButton;
     SDL_Texture* mpYellowButton;

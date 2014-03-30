@@ -185,7 +185,7 @@ void Game::play()
             std::stringstream caption;
             
             //Calculate the frames per second and create the string
-            float frameRate = frameCounter / ( fps.get_ticks() / 1000.f );
+            //float frameRate = frameCounter / ( fps.get_ticks() / 1000.f );
             //std::cout << "Average Frames Per Second: " <<  frameRate << std::endl;
             
             //Reset the caption

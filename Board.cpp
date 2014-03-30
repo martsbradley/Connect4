@@ -43,8 +43,9 @@ static void checkLevel(int level) {
 
 Piece Column::getPositionStatus(int level) {
     checkLevel(level);
+    int columnSize = colData.size(); 
 
-    if (level < colData.size()) {
+    if (level < columnSize) {
        return colData[level];
     }
     else {
@@ -97,7 +98,7 @@ void Board::reset()
 }
 
 // helper method avoids polluting the interface of the class.
-static void checkColumn(int column, std::vector<Column>& arColumns ) {
+static void checkColumn(unsigned int column, std::vector<Column>& arColumns ) {
     if (column < 0 || column >= arColumns.size()) {
         throw std::logic_error("Index out of bounds");
     }

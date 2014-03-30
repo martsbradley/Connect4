@@ -92,7 +92,7 @@ static int scoreFourCells(std::string & arString)
 static int scoreSearch(std::string& arString)
 {
     int score = 0;
-    int idx = 0;
+    unsigned int idx = 0;
 
     /*
     So does it for 0 then 1, then 2
@@ -136,7 +136,7 @@ int StrengthSearch::getStrength()
     //std::cout << "Name:" << mName << std::endl;
 
     int score = 0;
-    int debugCount = 0;
+    //int debugCount = 0;
     int best = 0;
     int worst = 0;
     for (std::vector<std::string>::iterator it = mSearchData.begin();

@@ -114,8 +114,8 @@ SDL_Texture* SDLGraphics::loadFromFile(const std::string& arFileName)
 		else
 		{
 			//Get image dimensions
-			int mWidth = pLoadedSurface->w;
-			int mHeight = pLoadedSurface->h;
+		  //int mWidth = pLoadedSurface->w;
+		  //int mHeight = pLoadedSurface->h;
 		}
 
 		//Get rid of old loaded surface

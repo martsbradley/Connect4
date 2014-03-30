@@ -9,9 +9,9 @@ static unsigned char YELLOW_BYTE = 0b11000000;
 static unsigned char BLANK_BYTE =  0b00000000; 
 
 GameState::GameState()
-   :mMinMaxValue(0),
-    mLevel(0),
-    mScore(0)
+   : mLevel(0),
+     mScore(0),
+     mMinMaxValue(0)
 {
    for (int x = 0; x < 11;x++)
        mState[x] = BLANK_BYTE;
@@ -93,14 +93,14 @@ enum Piece GameState::getValueAtPosition(int aPosition)
 int GameState::getLevel() {
     return mLevel;
 }
-int GameState::setLevel(int aLevel) {
+void GameState::setLevel(int aLevel) {
     mLevel = aLevel;
 }
 
 int GameState::getScore() {
     return mScore;
 }
-int GameState::setScore(int aScore) {
+void GameState::setScore(int aScore) {
     mScore = aScore;
 }
 

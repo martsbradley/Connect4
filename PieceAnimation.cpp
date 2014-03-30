@@ -10,8 +10,8 @@ extern float frameRate;
 PieceAnimation::PieceAnimation(int aEndLevel, int aColumn, SDL_Texture* arButton)
   : mColumn(aColumn),
     mpTexture(arButton),
-    y(0),
-    mFinished(false)
+    mFinished(false),
+    y(0)
 {
    x = getXCordinateForColumn(aColumn);
    mEndY = getYCordinateForLevel(aEndLevel);

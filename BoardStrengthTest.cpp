@@ -300,7 +300,6 @@ void BoardStrengthTest::testNonWin2()
 
 
     int columnId = visitor.getBestCol();
-    enum ColumnName column = (enum ColumnName)columnId;
    //"Yellow would move to column 2 to avoid loosing.
     CPPUNIT_ASSERT_EQUAL(2, columnId) ;
 }
@@ -379,3 +378,77 @@ void BoardStrengthTest::testNonWin4()
 //	std::cout << "Game over?" << visitor.isGameOver() << std::endl;
 	std::cout << "Moving to " << visitor.getBestCol() << std::endl;
 }
+void BoardStrengthTest::testNonWin5()
+{
+    mpBoard->addPiece((enum ColumnName)3);
+    mpBoard->addPiece((enum ColumnName)3);
+    mpBoard->addPiece((enum ColumnName)3);
+    mpBoard->addPiece((enum ColumnName)3);
+    mpBoard->addPiece((enum ColumnName)5);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)1);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)3);
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)5);
+    mpBoard->addPiece((enum ColumnName)5);
+    mpBoard->addPiece((enum ColumnName)5);
+    mpBoard->addPiece((enum ColumnName)5);
+    mpBoard->addPiece((enum ColumnName)3);
+    mpBoard->addPiece((enum ColumnName)5);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)0);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)0);
+    mpBoard->addPiece((enum ColumnName)6);
+    mpBoard->addPiece((enum ColumnName)0);
+    mpBoard->addPiece((enum ColumnName)0);
+    mpBoard->addPiece((enum ColumnName)0);
+    mpBoard->addPiece((enum ColumnName)0);
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)6);
+    mpBoard->addPiece((enum ColumnName)6);
+    mpBoard->addPiece((enum ColumnName)6);
+    mpBoard->addPiece((enum ColumnName)1);
+    mpBoard->addPiece((enum ColumnName)1);
+}
+////addPiece((enum ColumnName)6);
+////addPiece((enum ColumnName)2);
+////addPiece((enum ColumnName)3);
+////addPiece((enum ColumnName)2);
+////addPiece((enum ColumnName)2);
+////addPiece((enum ColumnName)0);
+////addPiece((enum ColumnName)4);
+////addPiece((enum ColumnName)5);
+////addPiece((enum ColumnName)3);
+////addPiece((enum ColumnName)2);
+////addPiece((enum ColumnName)2);
+////addPiece((enum ColumnName)1);
+////addPiece((enum ColumnName)3);
+////addPiece((enum ColumnName)3);
+////addPiece((enum ColumnName)3);
+////addPiece((enum ColumnName)0);
+////addPiece((enum ColumnName)0);
+////addPiece((enum ColumnName)3);
+////addPiece((enum ColumnName)6);
+////addPiece((enum ColumnName)2);
+////addPiece((enum ColumnName)0);
+////addPiece((enum ColumnName)5);
+////addPiece((enum ColumnName)5);
+////addPiece((enum ColumnName)0);
+////addPiece((enum ColumnName)0);
+////addPiece((enum ColumnName)6);
+////addPiece((enum ColumnName)5);
+////addPiece((enum ColumnName)6);
+////addPiece((enum ColumnName)6);
+////addPiece((enum ColumnName)5);
+////addPiece((enum ColumnName)5);
+////addPiece((enum ColumnName)1);
+////addPiece((enum ColumnName)1);
+

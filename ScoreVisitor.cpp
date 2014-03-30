@@ -61,8 +61,8 @@ void ScoreVisitor::visit(GameState* apGameState)
                                                         va);
     if (it != states.end())
     {
-        //std::cout << "Found it" << std::endl;
-        //(*it)->output();
+      //std::cout << "Found it" << std::endl;
+      //(*it)->output();
 
         std::vector<int> heightsBeforeMove = apGameState->getColumnsHeights();
         std::vector<int> heightsAfterMove = (*it)->getColumnsHeights();
