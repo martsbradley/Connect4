@@ -14,7 +14,7 @@ public:
     ScoreVisitor();
     virtual void visit(GameState* apGameState);
     int getBestCol();
-    bool isGameOver();
+    //bool isGameOver();
 
 private:
     void min(GameState* apGameState);
@@ -22,6 +22,6 @@ private:
     void setup(GameState* apGameState);
     BoardStrength mStrength;
     int mColumnToInsert;
-    bool mGameOver;
+    //bool mGameOver;
 };
 #endif // VISITOR_H

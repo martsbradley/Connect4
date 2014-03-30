@@ -59,27 +59,37 @@ Connect4Grid::Connect4Grid(SDLGraphics& arGraphics)
          ColPositions pos(x, x+mButtonWidth);
          myColPositions.push_back(pos);
     }
-
-
-//	mBoard.addPiece((enum ColumnName) 3); //Me
-//	mBoard.addPiece((enum ColumnName) 3);
-//	mBoard.addPiece((enum ColumnName) 5); //Me
-//	mBoard.addPiece((enum ColumnName) 4);
-//	mBoard.addPiece((enum ColumnName) 3); //Me
-//	mBoard.addPiece((enum ColumnName) 4);
-//	mBoard.addPiece((enum ColumnName) 5); //Me
-//	mBoard.addPiece((enum ColumnName) 5);
-//	mBoard.addPiece((enum ColumnName) 3); //Me
-//	mBoard.addPiece((enum ColumnName) 4);
-//	mBoard.addPiece((enum ColumnName) 4); //Me
-//	mBoard.addPiece((enum ColumnName) 5);
-//	mBoard.addPiece((enum ColumnName) 2); //Me
-//	mBoard.addPiece((enum ColumnName) 5);
-//	mBoard.addPiece((enum ColumnName) 5); //Me
-//	mBoard.addPiece((enum ColumnName) 1);
-//	mBoard.addPiece((enum ColumnName) 4); //Me
-//	mBoard.addPiece((enum ColumnName) 1);
-	//mBoard.addPiece((enum ColumnName) 1); //Me
+    mBoard.addPiece((enum ColumnName)4);
+    mBoard.addPiece((enum ColumnName)4);
+    mBoard.addPiece((enum ColumnName)3);
+    mBoard.addPiece((enum ColumnName)2);
+    mBoard.addPiece((enum ColumnName)2);
+    mBoard.addPiece((enum ColumnName)2);
+    mBoard.addPiece((enum ColumnName)2);
+    mBoard.addPiece((enum ColumnName)1);
+    mBoard.addPiece((enum ColumnName)4);
+    mBoard.addPiece((enum ColumnName)0);
+    mBoard.addPiece((enum ColumnName)2);
+    mBoard.addPiece((enum ColumnName)1);
+    mBoard.addPiece((enum ColumnName)1);
+    mBoard.addPiece((enum ColumnName)1);
+    mBoard.addPiece((enum ColumnName)4);
+    mBoard.addPiece((enum ColumnName)4);
+    mBoard.addPiece((enum ColumnName)2);
+    mBoard.addPiece((enum ColumnName)3);
+    mBoard.addPiece((enum ColumnName)1);
+    mBoard.addPiece((enum ColumnName)6);
+    mBoard.addPiece((enum ColumnName)6);
+    mBoard.addPiece((enum ColumnName)1);
+    mBoard.addPiece((enum ColumnName)4);
+    mBoard.addPiece((enum ColumnName)0);
+    mBoard.addPiece((enum ColumnName)6);
+    mBoard.addPiece((enum ColumnName)6);
+    mBoard.addPiece((enum ColumnName)5);
+    mBoard.addPiece((enum ColumnName)6);
+    mBoard.addPiece((enum ColumnName)6);
+    mBoard.addPiece((enum ColumnName)5);
+    //mBoard.addPiece((enum ColumnName)5);
 
 }
 Connect4Grid::~Connect4Grid() {
@@ -144,7 +154,7 @@ void Connect4Grid::renderColumn(enum ColumnName column)
         {
             // Animations done, add the peice to the board.
             mBoard.addPiece((enum ColumnName)mpAnimation->getColumn());
-            std::cout << "addPiece("<< (enum ColumnName)mpAnimation->getColumn() << std::endl;
+            std::cout << "addPiece((enum ColumnName)"<< (enum ColumnName)mpAnimation->getColumn() << ");" << std::endl;
             delete mpAnimation;
             mpAnimation = 0;
         }
@@ -174,6 +184,10 @@ void Connect4Grid::renderBoard()
     renderColumn(COLUMN6);
 
     renderBoardOutline();
+    if (mBoard.isGameOver())
+    {
+
+    }
 }
 
 void Connect4Grid::handleEvent(SDL_Event& arEvent) 
@@ -275,10 +289,6 @@ void Connect4Grid::updateGame()
         assert(mBoard.canAddPiece(column));
 
         startAnimation(column);
-        if (visitor.isGameOver()) 
-        {
-             std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
-        }
     }
 
 	GameState state;
@@ -287,20 +297,10 @@ void Connect4Grid::updateGame()
 	BoardStrength strength;
 	strength.setTree(&state);
 
-	if (abs(strength.getBoardStrength()) > 1000000)
+	if (abs(strength.getBoardStrength()) >= 1000000)
 	{
-	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
-	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
-	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
-	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
-	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
-	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
-	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
+	   std::cout << "GAME OVERGAME"  << std::endl;
 
-
-
-
-	   std::cout << "GAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVERGAME OVER"  << std::endl;
 		mBoard.setGameOver(true);
 	}
 }

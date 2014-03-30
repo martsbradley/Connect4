@@ -171,7 +171,7 @@ void BoardStrengthTest::testUpDiagonal()
     BoardStrength strength;
     strength.setTree(&gameState);
 
-    CPPUNIT_ASSERT_EQUAL(WINNING_SCORE, strength.getBoardStrength()) ;
+    CPPUNIT_ASSERT_EQUAL(1000700, strength.getBoardStrength()) ;
 }
 
 //  This test is very close to the one above only there are two winners.
@@ -198,14 +198,20 @@ void BoardStrengthTest::testTwoWinners()
     GameState gameState;
     gameState.setGameState(*mpBoard);
 
-  //VerticalSearch justForOutput;
-  //justForOutput.setGameState(gameState);
-  //justForOutput.output();
+
+    VerticalSearch justForOutput;
+    justForOutput.setGameState(&gameState);
+    justForOutput.output();
+
 
     BoardStrength strength;
     strength.setTree(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(0, strength.getBoardStrength()) ;
+
+
+    //  This test illustrates that the logic of the board class is wrong.
+    //  It should know enough to prevent further this state beign reached.
 }
 void BoardStrengthTest::testNonWin()
 {
@@ -327,6 +333,49 @@ void BoardStrengthTest::testNonWin3()
 	ScoreVisitor visitor;
 	GameState* pState = tree.getTree();
 	pState->accept(visitor);
-	std::cout << "Game over?" << visitor.isGameOver() << std::endl;
+	//std::cout << "Game over?" << visitor.isGameOver() << std::endl;
+	std::cout << "Moving to " << visitor.getBestCol() << std::endl;
+}
+void BoardStrengthTest::testNonWin4()
+{
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)3);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)1);
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)0);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)1);
+    mpBoard->addPiece((enum ColumnName)1);
+    mpBoard->addPiece((enum ColumnName)1);
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)2);
+    mpBoard->addPiece((enum ColumnName)3);
+    mpBoard->addPiece((enum ColumnName)1);
+    mpBoard->addPiece((enum ColumnName)6);
+    mpBoard->addPiece((enum ColumnName)6);
+    mpBoard->addPiece((enum ColumnName)1);
+    mpBoard->addPiece((enum ColumnName)4);
+    mpBoard->addPiece((enum ColumnName)0);
+    mpBoard->addPiece((enum ColumnName)6);
+    mpBoard->addPiece((enum ColumnName)6);
+    mpBoard->addPiece((enum ColumnName)5);
+    mpBoard->addPiece((enum ColumnName)6);
+    mpBoard->addPiece((enum ColumnName)6);
+    mpBoard->addPiece((enum ColumnName)5);
+    mpBoard->addPiece((enum ColumnName)5);
+
+	TreeBuilder tree;
+	tree.buildTree(*mpBoard);
+
+	ScoreVisitor visitor;
+	GameState* pState = tree.getTree();
+	pState->accept(visitor);
+//	std::cout << "Game over?" << visitor.isGameOver() << std::endl;
 	std::cout << "Moving to " << visitor.getBestCol() << std::endl;
 }

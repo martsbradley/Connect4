@@ -1,5 +1,5 @@
 CC      = g++
-CFLAGS  = `pkg-config --cflags SDL2_image sdl2 cppunit` -g
+CFLAGS  = `pkg-config --cflags SDL2_image sdl2 cppunit` -g -std=c++11 
 LDFLAGS = `pkg-config --libs SDL2_image sdl2 cppunit`
 
 all: game test
@@ -19,6 +19,6 @@ clean:
 
 
 test: TestRunner.o GameStateTest.o TreeBuilder.o BoardStrength.o Board.o BoardTest.o \
-        StrengthSearchTest.o BoardStrengthTest.o ScoreVisitor.o
+        StrengthSearchTest.o BoardStrengthTest.o ScoreVisitor.o DisplayVisitor.o
 	$(CC) -o $@ $+ $(LDFLAGS) 
 

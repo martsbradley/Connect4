@@ -27,15 +27,15 @@ public:
 };
 
 ScoreVisitor::ScoreVisitor()
-  : mColumnToInsert(0),
-    mGameOver(false)
+  : mColumnToInsert(0)
+    //mGameOver(false)
 {
 }
 
-bool ScoreVisitor::isGameOver()
-{
-    return mGameOver;
-}
+//  bool ScoreVisitor::isGameOver()
+//  {
+//      return mGameOver;
+//  }
 
 
 void displayScore(GameState* pState)
@@ -45,24 +45,24 @@ void displayScore(GameState* pState)
 void ScoreVisitor::visit(GameState* apGameState)
 {
     min(apGameState);
-    if (abs(apGameState->getMinMaxValue()) >= 1000000)
-    {
-       std::cout << "Game must be over because " << apGameState->getMinMaxValue() << std::endl;
-    	mGameOver = true;
-    }
+  //if (abs(apGameState->getMinMaxValue()) >= 1000000)
+  //{
+  //   std::cout << "Game must be over because " << apGameState->getMinMaxValue() << std::endl;
+  //	mGameOver = true;
+  //}
 
     ValueEquals va(apGameState->getMinMaxValue());
 
     std::vector<GameState*>& states =  apGameState->getNextStates();
-    std::for_each(states.begin(), states.end(), displayScore);
+    //std::for_each(states.begin(), states.end(), displayScore);
 
     std::vector<GameState*>::iterator it = std::find_if(states.begin(),
                                                         states.end(),
                                                         va);
     if (it != states.end())
     {
-        std::cout << "Found it" << std::endl;
-        (*it)->output();
+        //std::cout << "Found it" << std::endl;
+        //(*it)->output();
 
         std::vector<int> heightsBeforeMove = apGameState->getColumnsHeights();
         std::vector<int> heightsAfterMove = (*it)->getColumnsHeights();
@@ -75,7 +75,7 @@ void ScoreVisitor::visit(GameState* apGameState)
         {
            int colHeightAfter = *itAfter;
            int colHeightBefore =  *itBefore;
-           std::cout << "colHeightBefore " << colHeightBefore << " colHeightAfter " << colHeightAfter <<std::endl;
+         //  std::cout << "colHeightBefore " << colHeightBefore << " colHeightAfter " << colHeightAfter <<std::endl;
 
            if (colHeightAfter > colHeightBefore)
            {

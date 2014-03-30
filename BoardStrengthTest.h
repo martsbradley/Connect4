@@ -8,16 +8,17 @@ class BoardStrengthTest : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE( BoardStrengthTest );
 
-	//CPPUNIT_TEST( testEmptyBoard );
-	//CPPUNIT_TEST( testFourRedSquares );
-	//CPPUNIT_TEST( testThreeRedSquares );
-	//CPPUNIT_TEST( testThreeRedThreeYellow );
-	//CPPUNIT_TEST( testUpDiagonal );
-	//CPPUNIT_TEST( testTwoWinners );
-	//CPPUNIT_TEST( testNonWin );
-	//CPPUNIT_TEST( testNonWin2 );
-     CPPUNIT_TEST( testNonWin3 );
-     CPPUNIT_TEST_SUITE_END();
+  //CPPUNIT_TEST( testEmptyBoard );
+  //CPPUNIT_TEST( testFourRedSquares );
+  //CPPUNIT_TEST( testThreeRedSquares );
+  //CPPUNIT_TEST( testThreeRedThreeYellow );
+  //CPPUNIT_TEST( testUpDiagonal );
+  CPPUNIT_TEST( testTwoWinners );
+  //CPPUNIT_TEST( testNonWin );
+  //CPPUNIT_TEST( testNonWin2 );
+  //CPPUNIT_TEST( testNonWin3 );
+  //CPPUNIT_TEST( testNonWin4 );
+    CPPUNIT_TEST_SUITE_END();
 
 public:
     void setUp();
@@ -31,6 +32,7 @@ public:
     void testNonWin();
     void testNonWin2();
     void testNonWin3();
+    void testNonWin4();
 private:
     Board* mpBoard;
 };

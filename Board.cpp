@@ -5,6 +5,8 @@
 #include <sstream>
 #include <iostream>
 
+
+
 void Column::addPiece(Piece status) {
     if (isFull()) {
         std::ostringstream s;
