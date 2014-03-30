@@ -7,7 +7,7 @@
 #include <iostream>
 #include "ScoreVisitor.h"
 #include "DisplayVisitor.h"
-#include "assert.h"
+#include "ComputerPlayer.h"
 
 struct ColPositions {
    ColPositions(int start,int end) : mStart(start), mEnd(end){}
@@ -27,9 +27,6 @@ static int halfButtonHeight;
 static std::vector<ColPositions> myColPositions;
 
 
-  //static struct NextPiece red = NextPiece(RED, 0);
-  //static struct NextPiece yellow = NextPiece(YELLOW, 0);
-
 Connect4Grid::Connect4Grid(SDLGraphics& arGraphics)
   : mrGraphics(arGraphics),
     mpAnimation(0)
@@ -38,11 +35,6 @@ Connect4Grid::Connect4Grid(SDLGraphics& arGraphics)
     mpRedButton = mrGraphics.loadTexture("images/redbutton.png");
     mpYellowButton =  mrGraphics.loadTexture("images/yellowbutton.png");
     mpBoardTexture =  mrGraphics.loadFromFile("images/board2.png");
-
-  //red = NextPiece(RED, mpRedButton);
-  //yellow = NextPiece(YELLOW, mpYellowButton);
-  //nextPiece = red;
-
 
     SDL_QueryTexture(mpBoardTexture, NULL, NULL, &mColumnWidth, &mColumnHeight);
     SDL_QueryTexture(mpRedButton, NULL, NULL, &mButtonWidth, &mButtonHeight);
@@ -53,11 +45,10 @@ Connect4Grid::Connect4Grid(SDLGraphics& arGraphics)
     halfColHeight = mColumnHeight/2;
     halfButtonHeight = mButtonHeight/2;
 
-
     for (int columnIdx = COLUMN0; columnIdx <=COLUMN6; columnIdx++) {
-         int x = 10 + (columnIdx+1) * mColumnWidth - halfColWidth - halfButtonWidth;
-         ColPositions pos(x, x+mButtonWidth);
-         myColPositions.push_back(pos);
+        int x = 10 + (columnIdx+1) * mColumnWidth - halfColWidth - halfButtonWidth;
+        ColPositions pos(x, x+mButtonWidth);
+        myColPositions.push_back(pos);
     }
     mBoard.addPiece((enum ColumnName)6);
     mBoard.addPiece((enum ColumnName)2);
@@ -114,16 +105,6 @@ void Connect4Grid::renderBoardOutline(){
         }
     }
 }
- // static int verticalData[] ={ 0,  1,  2,  3,  4,  5, -1,
- //                              6,  7,  8,  9, 10, 11, -1,
- //                             12, 13, 14, 15, 16, 17, -1,
- //                             18, 19, 20, 21, 22, 23, -1,
- //                             24, 25, 26, 27, 28, 29, -1,
- //                             30, 31, 32, 33, 34, 35, -1,
- //                             36, 37, 38, 39, 40, 41, -2};
-
-#include "BoardStrength.h"
-#include "TreeBuilder.h"
 
 void Connect4Grid::renderColumn(enum ColumnName column)
 {
@@ -155,23 +136,10 @@ void Connect4Grid::renderColumn(enum ColumnName column)
         else 
         {
             // Animations done, add the peice to the board.
-            mBoard.addPiece((enum ColumnName)mpAnimation->getColumn());
             std::cout << "addPiece((enum ColumnName)"<< (enum ColumnName)mpAnimation->getColumn() << ");" << std::endl;
+            mBoard.addPiece((enum ColumnName)mpAnimation->getColumn());
             delete mpAnimation;
             mpAnimation = 0;
-
-            //  if the game is over update the mBoard object.
-            GameState state;
-            state.setGameState(mBoard);
-
-            BoardStrength strength;
-            strength.setTree(&state);
-
-            if (abs(strength.getBoardStrength()) >= 1000000)
-            {
-                std::cout << "GAME OVERGAME"  << std::endl;
-                mBoard.setGameOver(true);
-            }
         }
     }
 }
@@ -189,7 +157,6 @@ int getYCordinateForLevel(int alevel)
 
 void Connect4Grid::renderBoard()
 {
-    // Render the columns starting at the first on the left.
     renderColumn(COLUMN0);
     renderColumn(COLUMN1);
     renderColumn(COLUMN2);
@@ -197,12 +164,7 @@ void Connect4Grid::renderBoard()
     renderColumn(COLUMN4);
     renderColumn(COLUMN5);
     renderColumn(COLUMN6);
-
     renderBoardOutline();
-    if (mBoard.isGameOver())
-    {
-
-    }
 }
 
 void Connect4Grid::handleEvent(SDL_Event& arEvent) 
@@ -265,8 +227,6 @@ void Connect4Grid::startAnimation(int col) {
 
     int endLevel = mBoard.howManyPiecesInColumn((enum ColumnName)col);
 
-    //std::cout << "started animation on column " << col << std::endl;
-
     SDL_Texture* coin = mpRedButton;
 
     if (mBoard.getNextPiece() == YELLOW)
@@ -280,33 +240,10 @@ void Connect4Grid::startAnimation(int col) {
 
 void Connect4Grid::updateGame()
 {
-	if (mBoard.isGameOver() == true)
-	{
-		return;
-	}
-
-    if (mBoard.getNextPiece() == YELLOW && (mpAnimation == 0 || mpAnimation->isFinished()))
+    if (!mBoard.isGameOver() && mBoard.getNextPiece() == YELLOW && (mpAnimation == nullptr || mpAnimation->isFinished()))
     {
-        // This hard work should be removed from the event thread.
-        //std::cout << "NextPiece is " << mBoard.getNextPiece() << std::endl;
-        TreeBuilder tree;
-        tree.buildTree(mBoard);
-        //std::cout << "Tree built" << std::endl;
-
-        ScoreVisitor visitor;
-        GameState* pState = tree.getTree();
-        pState->accept(visitor);
-        //std::cout << "MinMaxScore " << pState->getMinMaxValue() << std::endl;
-
-        int columnId = visitor.getBestCol();
-
-        enum ColumnName column = (enum ColumnName)columnId;
-        if (!mBoard.canAddPiece(column))
-            std::cout << "Failed trying to put it into "<< column << std::endl;
-
-        assert(mBoard.canAddPiece(column));
-
+        ComputerPlayer playerTwo;
+        enum ColumnName column = playerTwo.takeYourTurn(mBoard);
         startAnimation(column);
     }
-
 }

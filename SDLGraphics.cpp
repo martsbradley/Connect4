@@ -36,7 +36,7 @@ SDLGraphics::SDLGraphics()
 
 
     mpWindow = SDL_CreateWindow("Hello World!", 100, 100, 600, 530, SDL_WINDOW_SHOWN);
-    if (mpWindow == 0){
+    if (mpWindow == nullptr){
         std::cout << SDL_GetError() << std::endl;
         throw std::logic_error(SDL_GetError());
     }
@@ -67,7 +67,7 @@ SDL_Renderer* SDLGraphics::getRenderer() {
     }
 
     mpRenderer= SDL_CreateRenderer(mpWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (mpRenderer == 0){
+    if (mpRenderer == nullptr){
         std::cout << SDL_GetError() << std::endl;
         throw std::logic_error(SDL_GetError());
     }
@@ -76,7 +76,7 @@ SDL_Renderer* SDLGraphics::getRenderer() {
 
 SDL_Texture* SDLGraphics::loadTexture(const std::string& arFileName) {
     SDL_Texture *texture = IMG_LoadTexture(mpRenderer, arFileName.c_str());
-    if (texture == 0) {
+    if (texture == nullptr) {
         throw std::logic_error("Unable to load Texture");
     }
 

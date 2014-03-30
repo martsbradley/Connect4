@@ -30,9 +30,7 @@ private:
     std::vector<Piece> colData;
     int mColumnId;
        
-      
 public:
-   
     bool operator==(const Column& arColumn) const;
     Column(int id);
     int getId() const;
@@ -44,20 +42,19 @@ public:
     void reset();
 };
 
-class Board {
+class Board 
+{
 
 public: 
     Board();
     Board(const Board& arBoard);
     void reset();
 
-    void addPiece(enum ColumnName column);
+    void addPiece(enum ColumnName column,bool updateGameOver = true);
     Piece getNextPiece() const;
 
     Piece getPositionStatus(enum ColumnName column, int level);
     int howManyPiecesInColumn(enum ColumnName column);
-
-    void addBoardListener(BoardListener* apBoardListener);
 
     std::vector<Board> generateNextTurns();
 
@@ -67,10 +64,7 @@ public:
 	void setGameOver(bool aGameOver);
 private:
     std::vector<Column> mColumns;
-    std::vector<BoardListener*> mListeners;
     Piece nextPiece;
     bool mGameOver;
-
-
 };
 #endif  // BOARD_H

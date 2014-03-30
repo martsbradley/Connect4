@@ -8,7 +8,7 @@ all: game test
 
 
 game : main.o Board.o Game.o RenderCode.o PieceAnimation.o SDLGraphics.o BoardStrength.o TreeBuilder.o Connect4Grid.o \
-        ScoreVisitor.o DisplayVisitor.o
+        ScoreVisitor.o DisplayVisitor.o ComputerPlayer.o
 	$(CC) -g -o $@ $+ $(LDFLAGS) 
 
 %.o: %.cpp

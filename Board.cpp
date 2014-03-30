@@ -4,6 +4,8 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include "BoardStrength.h"
+#include "TreeBuilder.h"
 
 
 
@@ -104,7 +106,7 @@ static void checkColumn(unsigned int column, std::vector<Column>& arColumns ) {
     }
 }
 
-void Board::addPiece(enum ColumnName column) {
+void Board::addPiece(enum ColumnName column, bool updateGameOver) {
     checkColumn(column, mColumns);
 
     if (!mColumns[column].isFull()) {
@@ -115,6 +117,21 @@ void Board::addPiece(enum ColumnName column) {
         }
         else {
             nextPiece = RED;
+        }
+    }
+    if (updateGameOver)
+    {
+        //  if the game is over update the mBoard object.
+        GameState state;
+        state.setGameState(*this);
+
+        BoardStrength strength;
+        strength.setTree(&state);
+
+        if (abs(strength.getBoardStrength()) >= 1000000)
+        {
+            std::cout << "GAME OVERGAME"  << strength.getBoardStrength()<< std::endl;
+            setGameOver(true);
         }
     }
 }
@@ -130,11 +147,6 @@ Piece Board::getPositionStatus(enum ColumnName column, int level) {
 
 int Board::howManyPiecesInColumn(enum ColumnName column){
    return mColumns[column].getCount();
-}
-
-void Board::addBoardListener(BoardListener* apBoardListener)
-{
-    mListeners.push_back(apBoardListener);
 }
 
 bool Board::operator==(const Board& arBoard) const
@@ -171,10 +183,10 @@ std::vector<Board> Board::generateNextTurns()
         if (rColumn.isFull()) continue;
 
         Board board(*this); //  copy of this board
-        board.addPiece((enum ColumnName)rColumn.getId());
+
+        board.addPiece((enum ColumnName)rColumn.getId(), false);
         boards.push_back(board);
     }
-
 
     return boards;
 }
