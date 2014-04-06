@@ -84,14 +84,6 @@ SDL_Texture* SDLGraphics::loadTexture(const std::string& arFileName) {
     return texture;
 }
 
-
-
-
-
-
-
-
-
 SDL_Texture* SDLGraphics::loadFromFile(const std::string& arFileName)
 {
 	//The final texture

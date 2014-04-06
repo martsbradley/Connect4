@@ -7,8 +7,6 @@
 #include "BoardStrength.h"
 #include "TreeBuilder.h"
 
-
-
 void Column::addPiece(Piece status) {
     if (isFull()) {
         std::ostringstream s;
@@ -51,7 +49,7 @@ Piece Column::getPositionStatus(int level) {
        return colData[level];
     }
     else {
-       return EMPTY;
+       return Piece::EMPTY;
     }
 }
 
@@ -75,7 +73,7 @@ Board::Board() {
     mColumns.push_back(Column(4));
     mColumns.push_back(Column(5));
     mColumns.push_back(Column(6));
-    nextPiece = RED;
+    nextPiece = Piece::RED;
     mGameOver = false;
 }
 Board::Board(const Board& arBoard) {
@@ -112,11 +110,11 @@ void Board::addPiece(enum ColumnName column, bool updateGameOver) {
     if (!mColumns[column].isFull()) {
         mColumns[column].addPiece(nextPiece);
         
-        if (nextPiece == RED) {
-            nextPiece = YELLOW;
+        if (nextPiece == Piece::RED) {
+            nextPiece = Piece::YELLOW;
         }
         else {
-            nextPiece = RED;
+            nextPiece = Piece::RED;
         }
     }
     if (updateGameOver)
@@ -208,6 +206,3 @@ void Board::setGameOver(bool aGameOver)
 {
 	mGameOver = aGameOver;
 }
-
-
-

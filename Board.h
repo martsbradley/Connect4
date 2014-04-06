@@ -1,7 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 #include <vector>
-enum Piece {
+enum class Piece {
    RED,
    YELLOW,
    EMPTY
@@ -15,15 +15,6 @@ enum ColumnName {
    COLUMN5,
    COLUMN6,
 };
-
-
-class BoardListener
-{
-public:
-    virtual void peiceAdded(enum Piece aPiece, enum ColumnName aCol, int level) = 0;
-    virtual void clearBoarded() = 0;
-};
-
 
 class Column {
 private:

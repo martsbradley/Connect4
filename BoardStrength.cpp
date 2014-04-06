@@ -22,9 +22,9 @@ void StrengthSearch::setGameState(GameState* apGameState)
         else {
             char value = ' ';
             enum Piece piece = apGameState->getValueAtPosition(*it);
-            if (piece == YELLOW)
+            if (piece == Piece::YELLOW)
                 value = 'Y';
-            else if (piece == RED)
+            else if (piece == Piece::RED)
                 value = 'R';
 
             line.push_back(value);
@@ -132,11 +132,8 @@ int StrengthSearch::getStrength()
 {
     // for each string in mSearchData get a score and return the 
     // sum of the scores
-    
-    //std::cout << "Name:" << mName << std::endl;
 
     int score = 0;
-    //int debugCount = 0;
     int best = 0;
     int worst = 0;
     for (std::vector<std::string>::iterator it = mSearchData.begin();
@@ -144,9 +141,8 @@ int StrengthSearch::getStrength()
          it++)
     {
         int thisScore = scoreSearch(*it);
-        //std::cout << "thisScore " << thisScore << std::endl;
-
         if (thisScore > best) best = thisScore;
+
         if (thisScore < worst) worst = thisScore;
 
         if (thisScore == WINNING_SCORE || thisScore == LOOSING_SCORE) {
@@ -258,7 +254,6 @@ void BoardStrength::setTree(GameState* apGameState)
     horizontal.setGameState(apGameState);
     upDiagonal.setGameState(apGameState);
     downDiagonal.setGameState(apGameState);
-
 }
 int BoardStrength::getBoardStrength()
 {

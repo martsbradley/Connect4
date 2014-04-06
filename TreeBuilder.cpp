@@ -52,10 +52,10 @@ void GameState::setGameState(Board& arBoard)
 unsigned char getPieceBits(int aColumn, int aLevel, Piece aPiece)
 {
     unsigned char piece = BLANK_BYTE;
-    if (aPiece == RED) {
+    if (aPiece == Piece::RED) {
         piece = RED_BYTE;
     }
-    else if (aPiece == YELLOW) {
+    else if (aPiece == Piece::YELLOW) {
         piece = YELLOW_BYTE;
     }
        
@@ -83,11 +83,11 @@ enum Piece GameState::getValueAtPosition(int aPosition)
     theByte &= mask;
     theByte = theByte << (2*byteOffset);
      
-    enum Piece result = EMPTY;
+    enum Piece result = Piece::EMPTY;
     if (theByte == RED_BYTE)
-        result = RED;
+        result = Piece::RED;
     else if (theByte == YELLOW_BYTE)
-        result = YELLOW;
+        result = Piece::YELLOW;
     return result;
 }
 int GameState::getLevel() {
@@ -277,7 +277,7 @@ std::vector<int> GameState::getColumnsHeights()
         for (int pos = it->bottom;pos >= it->top; pos--)
         {
             enum Piece piece = getValueAtPosition(pos);
-            if (piece == EMPTY)
+            if (piece == Piece::EMPTY)
             {
                 break;
             }
@@ -311,11 +311,11 @@ void GameState::output()
         while(times < 7)
         {
             enum Piece piece = getValueAtPosition(pos);
-            if (piece == RED)
+            if (piece == Piece::RED)
             {
                 std::cout << "R";
             }
-            else if (piece == YELLOW) 
+            else if (piece == Piece::YELLOW) 
             {
                 std::cout << "Y";
             }

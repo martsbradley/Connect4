@@ -60,31 +60,31 @@ void GameStateTest::testIntraCharIdx()
 void GameStateTest::testPieceBits() 
 {
     unsigned char piece = 0b01000000; 
-    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 5, RED));
+    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 5, Piece::RED));
 
     piece = 0b00010000; 
-    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 4, RED));
+    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 4, Piece::RED));
 
     piece = 0b00001100; 
-    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 3, YELLOW));
+    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 3, Piece::YELLOW));
 
     piece = 0b00000011; 
-    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 2, YELLOW));
+    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 2, Piece::YELLOW));
 
     piece = 0b11000000; 
-    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 1, YELLOW));
+    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 1, Piece::YELLOW));
 
     piece = 0b00010000; 
-    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 0, RED));
+    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(0, 0, Piece::RED));
 
     piece = 0b00000100; 
-    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(1, 5, RED));
+    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(1, 5, Piece::RED));
 
     piece = 0b00000011; 
-    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(1, 4, YELLOW));
+    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(1, 4, Piece::YELLOW));
 
     piece = 0b01000000; 
-    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(1, 3, RED));
+    CPPUNIT_ASSERT_EQUAL(piece, getPieceBits(1, 3, Piece::RED));
 }
 void GameStateTest::testByteOffset() 
 {
@@ -110,29 +110,30 @@ void GameStateTest::testByteIndex()
 
 void GameStateTest::testSetValue()
 {
-    mpGameState->setValue(0,3, RED);
-    mpGameState->setValue(0,2, RED);
-    mpGameState->setValue(0,1, YELLOW);
-    mpGameState->setValue(0,0, RED);
-    CPPUNIT_ASSERT_EQUAL(EMPTY,  mpGameState->getValueAtPosition(0) );
-    CPPUNIT_ASSERT_EQUAL(EMPTY,  mpGameState->getValueAtPosition(1) );
-    CPPUNIT_ASSERT_EQUAL(RED,    mpGameState->getValueAtPosition(2) );
-    CPPUNIT_ASSERT_EQUAL(RED,    mpGameState->getValueAtPosition(3) );
-    CPPUNIT_ASSERT_EQUAL(YELLOW, mpGameState->getValueAtPosition(4) );
-    CPPUNIT_ASSERT_EQUAL(RED,    mpGameState->getValueAtPosition(5) );
-    mpGameState->setValue(6,5, RED);
-    mpGameState->setValue(6,4, YELLOW);
-    mpGameState->setValue(6,3, RED);
-    mpGameState->setValue(6,2, RED);
-    mpGameState->setValue(6,1, YELLOW);
-    mpGameState->setValue(6,0, EMPTY);// logically makes no sense but testing anyway
+    mpGameState->setValue(0,3, Piece::RED);
+    mpGameState->setValue(0,2, Piece::RED);
+    mpGameState->setValue(0,1, Piece::YELLOW);
+    mpGameState->setValue(0,0, Piece::RED);
+    CPPUNIT_ASSERT      (Piece::EMPTY ==   mpGameState->getValueAtPosition(0) );
+    CPPUNIT_ASSERT      (Piece::EMPTY ==   mpGameState->getValueAtPosition(0) );
+    CPPUNIT_ASSERT      (Piece::EMPTY ==   mpGameState->getValueAtPosition(1) );
+    CPPUNIT_ASSERT      (Piece::RED   ==  mpGameState->getValueAtPosition(2) );
+    CPPUNIT_ASSERT      (Piece::RED   ==  mpGameState->getValueAtPosition(3) );
+    CPPUNIT_ASSERT      (Piece::YELLOW ==   mpGameState->getValueAtPosition(4) );
+    CPPUNIT_ASSERT      (Piece::RED ==   mpGameState->getValueAtPosition(5) );
+    mpGameState->setValue(6,5, Piece::RED);
+    mpGameState->setValue(6,4, Piece::YELLOW);
+    mpGameState->setValue(6,3, Piece::RED);
+    mpGameState->setValue(6,2, Piece::RED);
+    mpGameState->setValue(6,1, Piece::YELLOW);
+    mpGameState->setValue(6,0, Piece::EMPTY);// logically makes no sense but testing anyway
 
-    CPPUNIT_ASSERT_EQUAL(RED,     mpGameState->getValueAtPosition(36) );
-    CPPUNIT_ASSERT_EQUAL(YELLOW,  mpGameState->getValueAtPosition(37) );
-    CPPUNIT_ASSERT_EQUAL(RED,     mpGameState->getValueAtPosition(38) );
-    CPPUNIT_ASSERT_EQUAL(RED,     mpGameState->getValueAtPosition(39) );
-    CPPUNIT_ASSERT_EQUAL(YELLOW,  mpGameState->getValueAtPosition(40) );
-    CPPUNIT_ASSERT_EQUAL(EMPTY,   mpGameState->getValueAtPosition(41) );
+    CPPUNIT_ASSERT(Piece::RED  == mpGameState->getValueAtPosition(36) );
+    CPPUNIT_ASSERT(Piece::YELLOW== mpGameState->getValueAtPosition(37) );
+    CPPUNIT_ASSERT(Piece::RED  == mpGameState->getValueAtPosition(38) );
+    CPPUNIT_ASSERT(Piece::RED  == mpGameState->getValueAtPosition(39) );
+    CPPUNIT_ASSERT(Piece::YELLOW == mpGameState->getValueAtPosition(40) );
+    CPPUNIT_ASSERT(Piece::EMPTY == mpGameState->getValueAtPosition(41) );
 }
 void GameStateTest::testSetGameState()
 {
@@ -142,7 +143,7 @@ void GameStateTest::testSetGameState()
 
     for (int pos = 0; pos < 42; pos++ )
     {
-        CPPUNIT_ASSERT_EQUAL(EMPTY,    mpGameState->getValueAtPosition(pos) );
+        CPPUNIT_ASSERT(Piece::EMPTY == mpGameState->getValueAtPosition(pos) );
     }
 
     mpGameState->setGameState(board);
@@ -158,13 +159,13 @@ void GameStateTest::testSetGameState()
     for (int pos = 0; pos < 42; pos++ )
     {
         if (pos == 4)
-            CPPUNIT_ASSERT_EQUAL(YELLOW,    mpGameState->getValueAtPosition(pos) );
+            CPPUNIT_ASSERT(Piece::YELLOW ==    mpGameState->getValueAtPosition(pos) );
         else if (pos == 5)
-            CPPUNIT_ASSERT_EQUAL(RED,    mpGameState->getValueAtPosition(pos) );
+            CPPUNIT_ASSERT(Piece::RED ==    mpGameState->getValueAtPosition(pos) );
         else if (pos == 11)
-            CPPUNIT_ASSERT_EQUAL(RED,    mpGameState->getValueAtPosition(pos) );
+            CPPUNIT_ASSERT(Piece::RED ==    mpGameState->getValueAtPosition(pos) );
         else
-            CPPUNIT_ASSERT_EQUAL(EMPTY,    mpGameState->getValueAtPosition(pos) );
+            CPPUNIT_ASSERT(Piece::EMPTY ==    mpGameState->getValueAtPosition(pos) );
     }
 
     TreeBuilder tree;

@@ -118,9 +118,9 @@ void Connect4Grid::renderColumn(enum ColumnName column)
 
         int y = getYCordinateForLevel(level);
 
-        if (piece == RED) 
+        if (piece == Piece::RED) 
             renderTexture(mpRedButton, mpRenderer, x, y);
-        else if (piece == YELLOW)
+        else if (piece == Piece::YELLOW)
             renderTexture(mpYellowButton, mpRenderer, x, y);
     }
 
@@ -229,7 +229,7 @@ void Connect4Grid::startAnimation(int col) {
 
     SDL_Texture* coin = mpRedButton;
 
-    if (mBoard.getNextPiece() == YELLOW)
+    if (mBoard.getNextPiece() == Piece::YELLOW)
     {
         coin = mpYellowButton;
     }
@@ -240,7 +240,7 @@ void Connect4Grid::startAnimation(int col) {
 
 void Connect4Grid::updateGame()
 {
-    if (!mBoard.isGameOver() && mBoard.getNextPiece() == YELLOW && (mpAnimation == nullptr || mpAnimation->isFinished()))
+    if (!mBoard.isGameOver() && mBoard.getNextPiece() == Piece::YELLOW && (mpAnimation == nullptr || mpAnimation->isFinished()))
     {
         ComputerPlayer playerTwo;
         enum ColumnName column = playerTwo.takeYourTurn(mBoard);
