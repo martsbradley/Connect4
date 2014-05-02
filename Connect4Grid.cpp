@@ -5,6 +5,7 @@
 #include "SDL2/SDL_image.h"
 #include "PieceAnimation.h"
 #include <iostream>
+#include <algorithm>
 #include "ScoreVisitor.h"
 #include "DisplayVisitor.h"
 #include "ComputerPlayer.h"
@@ -15,6 +16,7 @@ struct ColPositions {
    int mEnd;
 };
 
+int getPositionFromColumnLevel(int aColumnIdx, int aLevel);
 
 static int mColumnWidth;
 static int mColumnHeight;
@@ -34,6 +36,7 @@ Connect4Grid::Connect4Grid(SDLGraphics& arGraphics)
     mpRenderer = mrGraphics.getRenderer();
     mpRedButton = mrGraphics.loadTexture("images/redbutton.png");
     mpYellowButton =  mrGraphics.loadTexture("images/yellowbutton.png");
+    mpWinningButton =  mrGraphics.loadTexture("images/winningbutton.png");
     mpBoardTexture =  mrGraphics.loadFromFile("images/board2.png");
 
     SDL_QueryTexture(mpBoardTexture, NULL, NULL, &mColumnWidth, &mColumnHeight);
@@ -93,8 +96,10 @@ Connect4Grid::~Connect4Grid() {
 }
 
 
+void Connect4Grid::renderWinningLine()
+{
+}
 void Connect4Grid::renderBoardOutline(){
-
 
     for (int rowId = 0; rowId < 7; rowId++) {
         for (int colId = 0; colId < 6; colId++) {
@@ -109,19 +114,37 @@ void Connect4Grid::renderBoardOutline(){
 void Connect4Grid::renderColumn(enum ColumnName column)
 {
     int columnIdx =  column;
+    std::vector<int> winnerPos;
+
+    if (mBoard.isGameOver())
+    {
+        winnerPos = mBoard.getWinningPositions();
+        for (auto pos : winnerPos)
+        {
+           std::cout << "Winner Pos " << pos << std::endl;
+        }
+    }
 
     for (int level = 0; level < Column::MaxHeight; ++level) {
         Piece piece = mBoard.getPositionStatus(column, level);
         
         int x = getXCordinateForColumn(columnIdx);
-        
-
         int y = getYCordinateForLevel(level);
 
         if (piece == Piece::RED) 
             renderTexture(mpRedButton, mpRenderer, x, y);
         else if (piece == Piece::YELLOW)
             renderTexture(mpYellowButton, mpRenderer, x, y);
+
+        if (mBoard.isGameOver())
+        {
+            int position = getPositionFromColumnLevel(columnIdx, level);
+
+            if (std::find(winnerPos.begin(), winnerPos.end(), position) != winnerPos.end())
+            {
+                renderTexture(mpWinningButton, mpRenderer, x, y);
+            }
+        }
     }
 
     if (mpAnimation != 0) 
@@ -155,6 +178,11 @@ int getYCordinateForLevel(int alevel)
     return y;
 }
 
+int getPositionFromColumnLevel(int aColumnIdx, int aLevel)
+{
+   return (5-aLevel)+(aColumnIdx*6);
+}
+
 void Connect4Grid::renderBoard()
 {
     renderColumn(COLUMN0);
@@ -165,6 +193,7 @@ void Connect4Grid::renderBoard()
     renderColumn(COLUMN5);
     renderColumn(COLUMN6);
     renderBoardOutline();
+    renderWinningLine();
 }
 
 void Connect4Grid::handleEvent(SDL_Event& arEvent) 
@@ -202,7 +231,8 @@ void Connect4Grid::handleEvent(SDL_Event& arEvent)
         }
     }
 
-    if (arEvent.type == SDL_MOUSEBUTTONDOWN) {
+    if (arEvent.type == SDL_MOUSEBUTTONDOWN) 
+    {
         int mouseXLoci= arEvent.motion.x;
 
         std::vector<ColPositions>::iterator it =  myColPositions.begin();

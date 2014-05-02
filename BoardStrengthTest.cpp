@@ -29,7 +29,7 @@ void BoardStrengthTest::testEmptyBoard()
     GameState gameState;
     gameState.setGameState(*mpBoard);
 
-    BoardStrength strength;
+    BoardStrengthCalculator strength;
     strength.setTree(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(0, strength.getBoardStrength()) ;
@@ -49,7 +49,7 @@ void BoardStrengthTest::testFourRedSquares()
     GameState gameState;
     gameState.setGameState(*mpBoard);
 
-    BoardStrength strength;
+    BoardStrengthCalculator strength;
     strength.setTree(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(WINNING_SCORE, strength.getBoardStrength()) ;
@@ -69,7 +69,7 @@ void BoardStrengthTest::testThreeRedSquares()
     GameState gameState;
     gameState.setGameState(*mpBoard);
 
-    BoardStrength strength;
+    BoardStrengthCalculator strength;
     strength.setTree(&gameState);
 
     std::cout << "testThreeRedSquares" << std::endl;
@@ -111,7 +111,7 @@ void BoardStrengthTest::testThreeRedThreeYellow()
     GameState gameState;
     gameState.setGameState(*mpBoard);
 
-    BoardStrength strength;
+    BoardStrengthCalculator strength;
     strength.setTree(&gameState);
 
     VerticalSearch justForOutput;
@@ -168,7 +168,7 @@ void BoardStrengthTest::testUpDiagonal()
 */
     GameState gameState;
     gameState.setGameState(*mpBoard);
-    BoardStrength strength;
+    BoardStrengthCalculator strength;
     strength.setTree(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(1000700, strength.getBoardStrength()) ;
@@ -204,7 +204,7 @@ void BoardStrengthTest::testTwoWinners()
     justForOutput.output();
 
 
-    BoardStrength strength;
+    BoardStrengthCalculator strength;
     strength.setTree(&gameState);
 
     CPPUNIT_ASSERT_EQUAL(0, strength.getBoardStrength()) ;
@@ -242,7 +242,7 @@ void BoardStrengthTest::testNonWin()
 
     gameState.output();
 
-    BoardStrength strength;
+    BoardStrengthCalculator strength;
     strength.setTree(&gameState);
 
     std::cout << "Strength is " << strength.getBoardStrength() << std::endl;
@@ -291,7 +291,7 @@ void BoardStrengthTest::testNonWin2()
          it != nextStates.end();
          ++it)
     {
-    	BoardStrength strength;
+    	BoardStrengthCalculator strength;
     	strength.setTree(*it);
     	std::cout << "Column: " << columnx++ << " score: "<< strength.getBoardStrength() << std::endl;
     	(*it)->output();

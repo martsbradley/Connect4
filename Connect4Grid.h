@@ -21,12 +21,14 @@ public:
 private:
     void renderColumn(enum ColumnName column);
     void renderBoardOutline();
+    void renderWinningLine();
 
     void startAnimation(int col);
 
     Board mBoard;
     SDL_Texture* mpRedButton;
     SDL_Texture* mpYellowButton;
+    SDL_Texture* mpWinningButton;
     SDL_Texture* mpBoardTexture;
     SDLGraphics& mrGraphics;
 

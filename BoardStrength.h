@@ -29,6 +29,28 @@ class GameState;
 #define WINNING_SCORE 1000000
 #define LOOSING_SCORE -1000000
 
+class SearchItem
+{
+public:
+    SearchItem(char aValue, char aPosition);
+    char mValue;
+    char mPosition;
+};
+
+class SearchLine
+{
+public :
+    void appendItem(char aValue, char aPosition);
+    void reverse();
+    void clear();
+    int scoreSearch();
+    std::vector<int> getWinningPositions() { return mWinningLine;}
+
+private:
+   std::vector<SearchItem> mItems;
+   std::vector<int> mWinningLine;
+
+};
 
 class StrengthSearch 
 {
@@ -41,13 +63,16 @@ public:
 
     void output();
 
+    std::vector<int> getWinningPositions();
+
 protected:
     std::string mName;
 private:
-    std::vector<std::string> mSearchData;
+    std::vector<SearchLine> mSearchData;
     //  The line data will show which positions
     //  Make up a line.  A -1 is a line break
     std::vector<int> lineData;
+    std::vector<int> mWinningLine;
 };
 
 class VerticalSearch : public StrengthSearch 
@@ -75,20 +100,22 @@ public:
 };
 
 
-class BoardStrength
+class BoardStrengthCalculator
 {
  public:
-    BoardStrength();
+    BoardStrengthCalculator();
 
     //  TODO this really needs its name fixed.
     void setTree(GameState* apGameState);
 
     int getBoardStrength();
+    std::vector<int> getWinningPositions();
 private:
     std::vector<StrengthSearch*> mBoardSearches;
     VerticalSearch vertical;
     HorizontalSearch horizontal;
     UpDiagonal upDiagonal;
     DownDiagonal downDiagonal;
+    std::vector<int> mWinningLine;
 };
 #endif //BOARDSTRENGTH_H

@@ -5,50 +5,40 @@
 #include <assert.h>
 #include <math.h>
 
-
-void StrengthSearch::setGameState(GameState* apGameState)
+SearchItem::SearchItem(char aValue, char aPosition)
+  :mValue{aValue},
+   mPosition{aPosition}
 {
-    mSearchData.clear();
-    std::vector<int>::iterator it = lineData.begin();
-
-    std::string line;
-    for (it = lineData.begin(); it != lineData.end(); it++) {
-        if (*it == -1) {
-            std::reverse(line.begin(),line.end());
-            mSearchData.push_back(line);
-
-            line.clear();
-        }
-        else {
-            char value = ' ';
-            enum Piece piece = apGameState->getValueAtPosition(*it);
-            if (piece == Piece::YELLOW)
-                value = 'Y';
-            else if (piece == Piece::RED)
-                value = 'R';
-
-            line.push_back(value);
-        }
-    }
 }
 
-void StrengthSearch::output() 
+void SearchLine::appendItem(char aValue, char aPosition)
 {
-  std::vector<std::string >::iterator it;
-
-  std::cout << "There are " << mSearchData.size() << std::endl;
-  for (it = mSearchData.begin(); it != mSearchData.end(); ++it) {
-      std::cout << *it << std::endl;
-  }
+   mItems.push_back(SearchItem(aValue, aPosition));
+}
+void SearchLine::reverse()
+{
+   std::reverse(mItems.begin(), mItems.end());
 }
 
-static int scoreFourCells(std::string & arString)
+void SearchLine::clear()
 {
-   
+   mItems.clear();
+   mWinningLine.clear();
+}
+
+static int scoreFourCells(std::vector<SearchItem>& arString)
+{
     assert(arString.size() == 4);
-    //size_t empties = std::count(arString.begin(), arString.end(), ' ');
-    size_t reds = std::count(arString.begin(), arString.end(), 'R');
-    size_t yellows = std::count(arString.begin(), arString.end(), 'Y');
+
+    size_t reds = std::count_if(arString.begin(), arString.end(), 
+    [](const SearchItem& arItem){ return arItem.mValue == 'R';});
+
+    size_t yellows = std::count_if(arString.begin(), arString.end(), 
+        [](const SearchItem& arItem) 
+        { 
+            return arItem.mValue == 'Y';
+        }
+    );
 
     int score = 0;
     if (reds > 0 && yellows > 0) // This means there are both reds and yellows present.
@@ -89,7 +79,7 @@ static int scoreFourCells(std::string & arString)
     return score;
 }
 
-static int scoreSearch(std::string& arString)
+int SearchLine::scoreSearch()
 {
     int score = 0;
     unsigned int idx = 0;
@@ -104,14 +94,20 @@ static int scoreSearch(std::string& arString)
 
     int best = 0;
     int worst = 0;
-    while (idx <= arString.size() - 4) {
-       std::string four = arString.substr(idx,4);
+    while (idx <= mItems.size() - 4) 
+    {
+        std::vector<SearchItem>::iterator begin = mItems.begin() + idx;
+        std::vector<SearchItem>::iterator end  = begin + 4;
+        std::vector<SearchItem> four(begin,end);
+
        int fourCellScore = scoreFourCells(four);
        // Below is nice line of debug...
        ///// std::cout << "score " << fourCellScore << "[" << four << "]"<< " for " << idx << std::endl;
 
-       if (fourCellScore == WINNING_SCORE || fourCellScore == LOOSING_SCORE) {
+       if (fourCellScore == WINNING_SCORE || fourCellScore == LOOSING_SCORE) 
+       {
            score = fourCellScore;
+           for (auto item: four) { mWinningLine.push_back(item.mPosition);}
            break;
        }
            
@@ -128,6 +124,44 @@ static int scoreSearch(std::string& arString)
     return score;
 }
 
+void StrengthSearch::setGameState(GameState* apGameState)
+{
+    mSearchData.clear();
+    std::vector<int>::iterator it = lineData.begin();
+
+    SearchLine line;
+    for (it = lineData.begin(); it != lineData.end(); it++) {
+        if (*it == -1) {
+            line.reverse();
+            mSearchData.push_back(line);
+
+            line.clear();
+        }
+        else {
+            char value = ' ';
+            enum Piece piece = apGameState->getValueAtPosition(*it);
+            if (piece == Piece::YELLOW)
+                value = 'Y';
+            else if (piece == Piece::RED)
+                value = 'R';
+
+            line.appendItem(value, *it);
+        }
+    }
+}
+
+void StrengthSearch::output() 
+{
+//    std::vector<std::string >::iterator it;
+
+//    std::cout << "There are " << mSearchData.size() << std::endl;
+//    for (it = mSearchData.begin(); it != mSearchData.end(); ++it) {
+//        std::cout << *it << std::endl;
+//    }
+}
+
+
+
 int StrengthSearch::getStrength()
 {
     // for each string in mSearchData get a score and return the 
@@ -136,17 +170,24 @@ int StrengthSearch::getStrength()
     int score = 0;
     int best = 0;
     int worst = 0;
-    for (std::vector<std::string>::iterator it = mSearchData.begin();
+    for (std::vector<SearchLine>::iterator it = mSearchData.begin();
          it != mSearchData.end();
          it++)
     {
-        int thisScore = scoreSearch(*it);
+        int thisScore = it->scoreSearch();
         if (thisScore > best) best = thisScore;
 
         if (thisScore < worst) worst = thisScore;
 
         if (thisScore == WINNING_SCORE || thisScore == LOOSING_SCORE) {
             score = thisScore;
+            mWinningLine = it->getWinningPositions();
+          //std::cout << "Start winner... "<< std::endl;
+          //for (auto pos : winningLine)
+          //{
+          //    std::cout << "Winning pos " << pos << std::endl;
+          //}
+          //std::cout << "Start winner... "<< std::endl;
             break;
         }
 
@@ -163,6 +204,15 @@ int StrengthSearch::getStrength()
 
 
     return score;
+}
+std::vector<int> StrengthSearch::getWinningPositions()
+{
+    return mWinningLine;
+}
+
+std::vector<int> BoardStrengthCalculator::getWinningPositions()
+{
+   return mWinningLine;
 }
 
 void StrengthSearch::setLines(int aLineInfoArray[])
@@ -237,7 +287,7 @@ DownDiagonal::DownDiagonal()
 
 /******************************************************************************/
 
-BoardStrength::BoardStrength()
+BoardStrengthCalculator::BoardStrengthCalculator()
 {
    mBoardSearches.push_back(&vertical);
    mBoardSearches.push_back(&horizontal);
@@ -245,7 +295,7 @@ BoardStrength::BoardStrength()
    mBoardSearches.push_back(&downDiagonal);
 }
 
-void BoardStrength::setTree(GameState* apGameState)
+void BoardStrengthCalculator::setTree(GameState* apGameState)
 {
     //  This method will update the 4 StrengthSearch objects
     //  with the details of this GameState
@@ -255,7 +305,7 @@ void BoardStrength::setTree(GameState* apGameState)
     upDiagonal.setGameState(apGameState);
     downDiagonal.setGameState(apGameState);
 }
-int BoardStrength::getBoardStrength()
+int BoardStrengthCalculator::getBoardStrength()
 {
     int score = 0;
     int best = 0;
@@ -265,7 +315,6 @@ int BoardStrength::getBoardStrength()
          it++) 
     {
         int currentScore = (*it)->getStrength();
-
         if (currentScore > 0) best += currentScore;
         if (currentScore < worst) worst += currentScore;
 
@@ -273,6 +322,8 @@ int BoardStrength::getBoardStrength()
         //   score = currentScore;
         //   break;
         //}
+        for (auto pos : (*it)->getWinningPositions())
+            mWinningLine.push_back(pos);
 
     }
 

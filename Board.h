@@ -53,9 +53,11 @@ public:
     bool canAddPiece(enum ColumnName column);
     bool isGameOver();
 	void setGameOver(bool aGameOver);
+    std::vector<int> getWinningPositions();
 private:
     std::vector<Column> mColumns;
     Piece nextPiece;
     bool mGameOver;
+    std::vector<int> mWinningPositions;
 };
 #endif  // BOARD_H

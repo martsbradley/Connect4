@@ -20,7 +20,7 @@ private:
     void min(GameState* apGameState);
     void max(GameState* apGameState);
     void setup(GameState* apGameState);
-    BoardStrength mStrength;
+    BoardStrengthCalculator mStrength;
     int mColumnToInsert;
     //bool mGameOver;
 };

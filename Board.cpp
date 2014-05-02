@@ -123,16 +123,29 @@ void Board::addPiece(enum ColumnName column, bool updateGameOver) {
         GameState state;
         state.setGameState(*this);
 
-        BoardStrength strength;
+        BoardStrengthCalculator strength;
         strength.setTree(&state);
 
         if (abs(strength.getBoardStrength()) >= 1000000)
         {
+            mWinningPositions.clear();
+            std::vector<int> winnerPos = strength.getWinningPositions();
+            for (auto pos : winnerPos)
+            {
+                //std::cout << "Winner Pos " << pos << std::endl;
+                mWinningPositions.push_back(pos);
+            }
+
             std::cout << "GAME OVERGAME"  << strength.getBoardStrength()<< std::endl;
             setGameOver(true);
         }
     }
 }
+std::vector<int> Board::getWinningPositions()
+{
+    return mWinningPositions;
+}
+
 Piece Board::getNextPiece() const
 {
     return nextPiece;
