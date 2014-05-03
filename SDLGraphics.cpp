@@ -35,7 +35,7 @@ SDLGraphics::SDLGraphics()
     }
 
 
-    mpWindow = SDL_CreateWindow("Hello World!", 100, 100, 600, 530, SDL_WINDOW_SHOWN);
+    mpWindow = SDL_CreateWindow("Hello Deane Bradley", 100, 100, 600, 530, SDL_WINDOW_SHOWN);
     if (mpWindow == nullptr){
         std::cout << SDL_GetError() << std::endl;
         throw std::logic_error(SDL_GetError());

@@ -32,7 +32,8 @@ void BoardStrengthTest::testEmptyBoard()
     BoardStrengthCalculator strength;
     strength.setTree(&gameState);
 
-    CPPUNIT_ASSERT_EQUAL(0, strength.getBoardStrength()) ;
+    BoardScore score;
+    CPPUNIT_ASSERT_EQUAL(score, strength.getBoardStrength()) ;
 }
 
 void BoardStrengthTest::testFourRedSquares()
@@ -52,7 +53,9 @@ void BoardStrengthTest::testFourRedSquares()
     BoardStrengthCalculator strength;
     strength.setTree(&gameState);
 
-    CPPUNIT_ASSERT_EQUAL(WINNING_SCORE, strength.getBoardStrength()) ;
+    BoardScore score;
+    score.setScore(WINNING_SCORE);
+    CPPUNIT_ASSERT_EQUAL(score, strength.getBoardStrength()) ;
 
 }
 
@@ -88,7 +91,9 @@ void BoardStrengthTest::testThreeRedSquares()
                          One at level 3 (600) one at level 2 (300)
                          and one at level 1( 100) ie 600 + 300 + 100
    */
-    CPPUNIT_ASSERT_EQUAL(1000, strength.getBoardStrength()) ;
+    BoardScore score;
+    score.setScore(1000);
+    CPPUNIT_ASSERT_EQUAL(score, strength.getBoardStrength()) ;
 }
 
 void BoardStrengthTest::testThreeRedThreeYellow()
@@ -119,7 +124,10 @@ void BoardStrengthTest::testThreeRedThreeYellow()
     justForOutput.output();
 
     std::cout << "testThreeRedThreeYellow" << std::endl;
-    CPPUNIT_ASSERT_EQUAL(1100, strength.getBoardStrength()) ;
+
+    BoardScore score;
+    score.setScore(1100);
+    CPPUNIT_ASSERT_EQUAL(score, strength.getBoardStrength()) ;
 
   // For red
   //Vertical      600 300 100  -> 1000
@@ -171,7 +179,9 @@ void BoardStrengthTest::testUpDiagonal()
     BoardStrengthCalculator strength;
     strength.setTree(&gameState);
 
-    CPPUNIT_ASSERT_EQUAL(1000700, strength.getBoardStrength()) ;
+    BoardScore score;
+    score.setScore(1000700);
+    CPPUNIT_ASSERT_EQUAL(score, strength.getBoardStrength()) ;
 }
 
 //  This test is very close to the one above only there are two winners.
@@ -207,7 +217,8 @@ void BoardStrengthTest::testTwoWinners()
     BoardStrengthCalculator strength;
     strength.setTree(&gameState);
 
-    CPPUNIT_ASSERT_EQUAL(0, strength.getBoardStrength()) ;
+    BoardScore score;
+    CPPUNIT_ASSERT_EQUAL(score, strength.getBoardStrength());
 
 
     //  This test illustrates that the logic of the board class is wrong.
