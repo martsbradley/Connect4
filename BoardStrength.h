@@ -37,13 +37,37 @@ public:
     char mPosition;
 };
 
+class BoardScore
+{
+public:
+    BoardScore();
+    void addWinningPosition(int aPosition);
+    std::vector<int> getWinningPosition();
+    void setScore(int aScore);
+    bool setScore(int aScore, const std::vector<SearchItem>& arFour);
+    int getScore() const;
+    bool isGameWinningScore() const;
+    bool operator>(const BoardScore& arOther) const;
+    bool operator==(const BoardScore& arOther) const;
+    BoardScore& operator+=(const BoardScore& arOther);
+    
+private:
+    std::vector<int> mWinningPositions;
+    int mScore;
+    int mBest;
+    int mWorst;
+};
+
+std::ostream& operator<<(std::ostream& os, const BoardScore& dt);
+
+
 class SearchLine
 {
 public :
     void appendItem(char aValue, char aPosition);
     void reverse();
     void clear();
-    int scoreSearch();
+    BoardScore scoreSearch();
     std::vector<int> getWinningPositions() { return mWinningLine;}
 
 private:
@@ -58,8 +82,7 @@ public:
     void setGameState(GameState* apGameState);
     void setLines(int aLineInfoArray[]);
 
-    int getStrength();
-
+    BoardScore getStrength();
 
     void output();
 
@@ -108,7 +131,7 @@ class BoardStrengthCalculator
     //  TODO this really needs its name fixed.
     void setTree(GameState* apGameState);
 
-    int getBoardStrength();
+    BoardScore getBoardStrength();
     std::vector<int> getWinningPositions();
 private:
     std::vector<StrengthSearch*> mBoardSearches;

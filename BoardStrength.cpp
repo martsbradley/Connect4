@@ -5,6 +5,102 @@
 #include <assert.h>
 #include <math.h>
 
+
+
+BoardScore::BoardScore()
+  :mScore{0},
+   mBest{0},
+   mWorst{0}
+{
+}
+
+void BoardScore::addWinningPosition(int aPosition)
+{
+   mWinningPositions.push_back(aPosition);
+}
+std::vector<int> BoardScore::getWinningPosition()
+{
+    return mWinningPositions;
+}
+
+//  if the arOther score is better than this then
+//  assign it.
+BoardScore& BoardScore::operator+=(const BoardScore& arOther)
+{
+    if (arOther.mScore > 0) mBest += arOther.mScore;
+    if (arOther.mScore < 0) mWorst += arOther.mScore;
+
+    if (mBest > abs(mWorst))
+       mScore = mBest;
+    else
+       mScore = mWorst;
+
+    if (mScore >= WINNING_SCORE || mScore <= LOOSING_SCORE) 
+    {
+       for (auto item: arOther.mWinningPositions) 
+       { 
+           mWinningPositions.push_back(item);
+       }
+    }
+    return *this;
+}
+bool BoardScore::operator==(const BoardScore& arOther) const
+{
+    return mScore == arOther.getScore();
+}
+bool BoardScore::operator>(const BoardScore& arOther) const
+{
+    int myScore = abs(mScore);
+    int otherScore = abs(arOther.mScore);
+    return myScore > otherScore;
+}
+
+void BoardScore::setScore(int aScore)
+{
+    mScore = aScore;
+}
+bool BoardScore::setScore(int aScore, const std::vector<SearchItem>& arFour)
+{
+    bool result = false;
+
+    if (aScore == WINNING_SCORE || aScore == LOOSING_SCORE) 
+    {
+       for (auto item: arFour) 
+       { 
+           mWinningPositions.push_back(item.mPosition);
+           std::cout << "Added winner " << (int)item.mPosition << std::endl;
+       }
+       result = true;
+    }
+           
+    if (aScore > 0) mBest += aScore;
+    if (aScore < 0) mWorst += aScore;
+
+    if (mBest > abs(mWorst))
+       mScore = mBest;
+    else
+       mScore = mWorst;
+
+    return result;
+}
+
+int BoardScore::getScore() const
+{
+    return mScore;
+}
+bool BoardScore::isGameWinningScore() const
+{
+    bool isWin = mScore >= WINNING_SCORE || 
+                 mScore <= LOOSING_SCORE;
+    return isWin;
+}
+
+std::ostream& operator<<(std::ostream& os, const BoardScore& dt)
+{
+    os <<  dt.getScore();
+    return os;
+}
+
 SearchItem::SearchItem(char aValue, char aPosition)
   :mValue{aValue},
    mPosition{aPosition}
@@ -79,9 +175,8 @@ static int scoreFourCells(std::vector<SearchItem>& arString)
     return score;
 }
 
-int SearchLine::scoreSearch()
+BoardScore SearchLine::scoreSearch()
 {
-    int score = 0;
     unsigned int idx = 0;
 
     /*
@@ -92,8 +187,7 @@ int SearchLine::scoreSearch()
       **** 2
     */
 
-    int best = 0;
-    int worst = 0;
+    BoardScore score;
     while (idx <= mItems.size() - 4) 
     {
         std::vector<SearchItem>::iterator begin = mItems.begin() + idx;
@@ -101,26 +195,15 @@ int SearchLine::scoreSearch()
         std::vector<SearchItem> four(begin,end);
 
        int fourCellScore = scoreFourCells(four);
-       // Below is nice line of debug...
+
+       if (score.setScore(fourCellScore, four))
+           break;
        ///// std::cout << "score " << fourCellScore << "[" << four << "]"<< " for " << idx << std::endl;
 
-       if (fourCellScore == WINNING_SCORE || fourCellScore == LOOSING_SCORE) 
-       {
-           score = fourCellScore;
-           for (auto item: four) { mWinningLine.push_back(item.mPosition);}
-           break;
-       }
-           
-      if (fourCellScore > 0) best += fourCellScore;
-      if (fourCellScore < 0) worst += fourCellScore;
-
-      if (best > abs(worst))
-          score = best;
-      else
-          score = worst;
 
        idx++;
     }
+
     return score;
 }
 
@@ -162,48 +245,34 @@ void StrengthSearch::output()
 
 
 
-int StrengthSearch::getStrength()
+BoardScore StrengthSearch::getStrength()
 {
     // for each string in mSearchData get a score and return the 
     // sum of the scores
 
-    int score = 0;
-    int best = 0;
-    int worst = 0;
+    BoardScore bestSoFar;
+
     for (std::vector<SearchLine>::iterator it = mSearchData.begin();
          it != mSearchData.end();
          it++)
     {
-        int thisScore = it->scoreSearch();
-        if (thisScore > best) best = thisScore;
+        BoardScore score = it->scoreSearch();
 
-        if (thisScore < worst) worst = thisScore;
-
-        if (thisScore == WINNING_SCORE || thisScore == LOOSING_SCORE) {
-            score = thisScore;
-            mWinningLine = it->getWinningPositions();
-          //std::cout << "Start winner... "<< std::endl;
-          //for (auto pos : winningLine)
-          //{
-          //    std::cout << "Winning pos " << pos << std::endl;
-          //}
-          //std::cout << "Start winner... "<< std::endl;
+        if (score.isGameWinningScore())
+        {
+            bestSoFar = score;
             break;
         }
-
-        if (best > abs(worst))
-             score = best;
-        else if (best == abs(worst)) 
+        else if (score > bestSoFar)
         {
-              score = 0;
+            bestSoFar = score;
         }
-        else
-             score = worst;
-        //std::cout << mName << " scored " << debugCount++ << " current " <<  thisScore << " total " << score << std::endl;
+
+        //std::cout << mName << " scored " << debugCount++ << " current " <<  
+        //                 thisScore << " total " << score << std::endl;
     }
 
-
-    return score;
+    return bestSoFar;
 }
 std::vector<int> StrengthSearch::getWinningPositions()
 {
@@ -305,36 +374,16 @@ void BoardStrengthCalculator::setTree(GameState* apGameState)
     upDiagonal.setGameState(apGameState);
     downDiagonal.setGameState(apGameState);
 }
-int BoardStrengthCalculator::getBoardStrength()
+BoardScore BoardStrengthCalculator::getBoardStrength()
 {
-    int score = 0;
-    int best = 0;
-    int worst = 0;
+    BoardScore score;
     for (std::vector<StrengthSearch*>::iterator it = mBoardSearches.begin();
          it != mBoardSearches.end();
          it++) 
     {
-        int currentScore = (*it)->getStrength();
-        if (currentScore > 0) best += currentScore;
-        if (currentScore < worst) worst += currentScore;
-
-        //if (currentScore == WINNING_SCORE || currentScore == LOOSING_SCORE) {
-        //   score = currentScore;
-        //   break;
-        //}
-        for (auto pos : (*it)->getWinningPositions())
-            mWinningLine.push_back(pos);
-
+        BoardScore currentScore = (*it)->getStrength();
+        score += currentScore;
     }
-
-    if (best > abs(worst))
-         score = best;
-    else if (best == abs(worst)) 
-    {
-          score = 0;
-    }
-    else
-         score = worst;
 
     //std::cout << "BoardStrength is " << score << std::endl;
     return score;

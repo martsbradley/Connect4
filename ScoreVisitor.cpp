@@ -95,18 +95,18 @@ void ScoreVisitor::min(GameState* apGameState)
     std::vector<GameState*>& states =  apGameState->getNextStates();
 
     mStrength.setTree(apGameState);
-	int score = mStrength.getBoardStrength();
+	BoardScore score = mStrength.getBoardStrength();
 
 	bool winner = false;
 
-	if (abs(score) >= 1000000) winner = true;
+	if (score.isGameWinningScore()) winner = true;
 
 
     if (states.size() == 0 || winner)
     {
 //        mStrength.setTree(apGameState);
 //        int score = mStrength.getBoardStrength();
-        apGameState->setMinMaxValue(score);
+        apGameState->setMinMaxValue(score.getScore());
         //std::cout << "set the min score to " << score << std::endl;
     }
     else
@@ -139,10 +139,10 @@ void ScoreVisitor::max(GameState* apGameState)
     std::vector<GameState*>& states =  apGameState->getNextStates();
 
     mStrength.setTree(apGameState);
-  	int score = mStrength.getBoardStrength();
+  	BoardScore score = mStrength.getBoardStrength();
 	bool winner = false;
 
-	if (abs(score) >= 1000000) winner = true;
+	if (score.isGameWinningScore()) winner = true;
 
 
 
@@ -150,7 +150,7 @@ void ScoreVisitor::max(GameState* apGameState)
     {
 //        mStrength.setTree(apGameState);
 //        int score = mStrength.getBoardStrength();
-        apGameState->setMinMaxValue(score);
+        apGameState->setMinMaxValue(score.getScore());
         //std::cout << "set the max score" << std::endl;
     }
     else

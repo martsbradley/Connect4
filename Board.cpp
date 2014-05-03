@@ -126,10 +126,11 @@ void Board::addPiece(enum ColumnName column, bool updateGameOver) {
         BoardStrengthCalculator strength;
         strength.setTree(&state);
 
-        if (abs(strength.getBoardStrength()) >= 1000000)
+        BoardScore score = strength.getBoardStrength();
+        if (score.isGameWinningScore())
         {
             mWinningPositions.clear();
-            std::vector<int> winnerPos = strength.getWinningPositions();
+            std::vector<int> winnerPos = score.getWinningPosition();
             for (auto pos : winnerPos)
             {
                 //std::cout << "Winner Pos " << pos << std::endl;

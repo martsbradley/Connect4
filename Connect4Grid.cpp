@@ -119,10 +119,6 @@ void Connect4Grid::renderColumn(enum ColumnName column)
     if (mBoard.isGameOver())
     {
         winnerPos = mBoard.getWinningPositions();
-        for (auto pos : winnerPos)
-        {
-           std::cout << "Winner Pos " << pos << std::endl;
-        }
     }
 
     for (int level = 0; level < Column::MaxHeight; ++level) {
