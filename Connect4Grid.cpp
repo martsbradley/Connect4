@@ -53,39 +53,39 @@ Connect4Grid::Connect4Grid(SDLGraphics& arGraphics)
         ColPositions pos(x, x+mButtonWidth);
         myColPositions.push_back(pos);
     }
-    mBoard.addPiece((enum ColumnName)6);
-    mBoard.addPiece((enum ColumnName)2);
-    mBoard.addPiece((enum ColumnName)3);
-    mBoard.addPiece((enum ColumnName)2);
-    mBoard.addPiece((enum ColumnName)2);
-    mBoard.addPiece((enum ColumnName)0);
-    mBoard.addPiece((enum ColumnName)4);
-    mBoard.addPiece((enum ColumnName)5);
-    mBoard.addPiece((enum ColumnName)3);
-    mBoard.addPiece((enum ColumnName)2);
-    mBoard.addPiece((enum ColumnName)2);
-    mBoard.addPiece((enum ColumnName)1);
-    mBoard.addPiece((enum ColumnName)3);
-    mBoard.addPiece((enum ColumnName)3);
-    mBoard.addPiece((enum ColumnName)3);
-    mBoard.addPiece((enum ColumnName)0);
-    mBoard.addPiece((enum ColumnName)0);
-    mBoard.addPiece((enum ColumnName)3);
-    mBoard.addPiece((enum ColumnName)6);
-    mBoard.addPiece((enum ColumnName)2);
-    mBoard.addPiece((enum ColumnName)0);
-    mBoard.addPiece((enum ColumnName)5);
-    mBoard.addPiece((enum ColumnName)5);
-    mBoard.addPiece((enum ColumnName)0);
-    mBoard.addPiece((enum ColumnName)0);
-    mBoard.addPiece((enum ColumnName)6);
-    mBoard.addPiece((enum ColumnName)5);
-    mBoard.addPiece((enum ColumnName)6);
-    mBoard.addPiece((enum ColumnName)6);
-    mBoard.addPiece((enum ColumnName)5);
-    mBoard.addPiece((enum ColumnName)5);
-    mBoard.addPiece((enum ColumnName)1);
-//    mBoard.addPiece((enum ColumnName)1);
+//  These are initial board positions I was using during a test
+//  mBoard.addPiece((enum ColumnName)6);
+//  mBoard.addPiece((enum ColumnName)2);
+//  mBoard.addPiece((enum ColumnName)3);
+//  mBoard.addPiece((enum ColumnName)2);
+//  mBoard.addPiece((enum ColumnName)2);
+//  mBoard.addPiece((enum ColumnName)0);
+//  mBoard.addPiece((enum ColumnName)4);
+//  mBoard.addPiece((enum ColumnName)5);
+//  mBoard.addPiece((enum ColumnName)3);
+//  mBoard.addPiece((enum ColumnName)2);
+//  mBoard.addPiece((enum ColumnName)2);
+//  mBoard.addPiece((enum ColumnName)1);
+//  mBoard.addPiece((enum ColumnName)3);
+//  mBoard.addPiece((enum ColumnName)3);
+//  mBoard.addPiece((enum ColumnName)3);
+//  mBoard.addPiece((enum ColumnName)0);
+//  mBoard.addPiece((enum ColumnName)0);
+//  mBoard.addPiece((enum ColumnName)3);
+//  mBoard.addPiece((enum ColumnName)6);
+//  mBoard.addPiece((enum ColumnName)2);
+//  mBoard.addPiece((enum ColumnName)0);
+//  mBoard.addPiece((enum ColumnName)5);
+//  mBoard.addPiece((enum ColumnName)5);
+//  mBoard.addPiece((enum ColumnName)0);
+//  mBoard.addPiece((enum ColumnName)0);
+//  mBoard.addPiece((enum ColumnName)6);
+//  mBoard.addPiece((enum ColumnName)5);
+//  mBoard.addPiece((enum ColumnName)6);
+//  mBoard.addPiece((enum ColumnName)6);
+//  mBoard.addPiece((enum ColumnName)5);
+//  mBoard.addPiece((enum ColumnName)5);
+//  mBoard.addPiece((enum ColumnName)1);
 
 }
 Connect4Grid::~Connect4Grid() {
@@ -155,7 +155,7 @@ void Connect4Grid::renderColumn(enum ColumnName column)
         else 
         {
             // Animations done, add the peice to the board.
-            std::cout << "addPiece((enum ColumnName)"<< (enum ColumnName)mpAnimation->getColumn() << ");" << std::endl;
+            //std::cout << "addPiece((enum ColumnName)"<< (enum ColumnName)mpAnimation->getColumn() << ");" << std::endl;
             mBoard.addPiece((enum ColumnName)mpAnimation->getColumn());
             delete mpAnimation;
             mpAnimation = 0;

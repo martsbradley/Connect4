@@ -68,7 +68,7 @@ bool BoardScore::setScore(int aScore, const std::vector<SearchItem>& arFour)
        for (auto item: arFour) 
        { 
            mWinningPositions.push_back(item.mPosition);
-           std::cout << "Added winner " << (int)item.mPosition << std::endl;
+           //std::cout << "Added winner " << (int)item.mPosition << std::endl;
        }
        result = true;
     }
