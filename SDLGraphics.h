@@ -1,6 +1,6 @@
 #ifndef SDLGRAPHICS_H
 #define SDLGRAPHICS_H
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include <list>
 #include <string>

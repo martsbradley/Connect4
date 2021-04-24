@@ -2,7 +2,7 @@
 #include <iostream>
 #include "SDLGraphics.h"
 #include "RenderCode.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "Connect4Grid.h"
 #include <sstream>

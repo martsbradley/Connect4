@@ -1,8 +1,8 @@
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "PieceAnimation.h"
 #include "RenderCode.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include <iostream>
 
 extern float frameRate;
